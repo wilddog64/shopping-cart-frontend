@@ -153,3 +153,14 @@ jobs:
             VITE_KEYCLOAK_URL=http://keycloak.identity.svc.cluster.local:8080
             VITE_KEYCLOAK_REALM=shopping-cart
             VITE_CLIENT_ID=frontend
+  publish:
+    name: Build, Scan & Push
+    needs: [build]
+    if: github.ref == refs/heads/main && github.event_name == push
+    uses: wilddog64/shopping-cart-infra/.github/workflows/build-push-deploy.yml@0a28d10
+    with:
+      service-name: shopping-cart-frontend
+      image-name: ghcr.io/wilddog64/shopping-cart-frontend
+    permissions:
+      contents: write
+      packages: write
