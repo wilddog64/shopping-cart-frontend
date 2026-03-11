@@ -56,3 +56,27 @@ Based on the codebase structure, the implementation appears stable. Likely activ
 - The nginx proxy configuration in `nginx.conf` must be kept in sync with backend service hostnames when deployed to Kubernetes
 - Keycloak realm `shopping-cart` and client `frontend` must be pre-configured before the app can authenticate
 - The `shopping-cart-infra` repo contains the Keycloak deployment with realm config at `identity/config/realm-shopping-cart.json`
+
+## CI Blocker — OPEN (2026-03-11)
+
+**Failing since:** 2026-03-09
+**Failing steps:** `Lint → Run ESLint` + `Type Check → Run TypeScript compiler`
+
+**Errors:**
+```
+ESLint:
+- src/components/layout/Header.tsx: 'Package' is defined but never used
+- src/components/layout/ProtectedRoute.tsx: 'Navigate' is defined but never used
+- src/stores/cartStore.ts: 'CartItem' is defined but never used
+
+TypeScript:
+- src/config/api.ts: Property 'env' does not exist on type 'ImportMeta'
+- src/config/auth.ts: Property 'env' does not exist on type 'ImportMeta'
+  (missing vite/client type definitions in tsconfig.json)
+```
+
+**Fix:**
+1. Remove unused imports in `Header.tsx`, `ProtectedRoute.tsx`, `cartStore.ts`
+2. Add `"types": ["vite/client"]` to `tsconfig.json` compilerOptions
+
+**Priority:** P1 — assigned to v0.8.0 milestone. See `k3d-manager/docs/issues/2026-03-11-shopping-cart-ci-failures.md`.
