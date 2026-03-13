@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from 'react-oidc-context'
-import { ShoppingCart, User, LogOut, Package } from 'lucide-react'
+import { ShoppingCart, User, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useCartStore } from '@/stores/cartStore'
 
