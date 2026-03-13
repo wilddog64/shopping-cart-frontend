@@ -1,4 +1,24 @@
-# Active Context: Shopping Cart Frontend
+## CI Status (as of 2026-03-13)
+
+**Branch:** `fix/ci-stabilization` — PR #1 open
+
+| Job | Status |
+|---|---|
+| Type Check | ✅ pass |
+| Test | ✅ pass |
+| Lint | ❌ fail |
+
+**Lint failure:** `react-refresh/only-export-components` warnings in:
+- `src/components/ui/Badge.tsx` line 32
+- `src/components/ui/Button.tsx` line 55
+- `src/test/test-utils.tsx` lines 18, 30
+
+`--max-warnings 0` treats these as errors. Fix: either disable the rule for these files
+or refactor to satisfy fast-refresh (move non-component exports to separate files).
+
+**Spec:** `wilddog64/shopping-cart-infra` → `docs/plans/ci-stabilization-round3.md` (c5797539)
+
+---# Active Context: Shopping Cart Frontend
 
 ## Current State
 
