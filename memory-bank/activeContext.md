@@ -57,26 +57,22 @@ Based on the codebase structure, the implementation appears stable. Likely activ
 - Keycloak realm `shopping-cart` and client `frontend` must be pre-configured before the app can authenticate
 - The `shopping-cart-infra` repo contains the Keycloak deployment with realm config at `identity/config/realm-shopping-cart.json`
 
-## CI Blocker — OPEN (2026-03-11)
+## CI Blocker — OPEN (2026-03-14)
 
-**Failing since:** 2026-03-09
-**Failing steps:** `Lint → Run ESLint` + `Type Check → Run TypeScript compiler`
+**Branch:** `fix/ci-stabilization` — PR #1 open
+**Failing run:** `23064411684`
+**Failing step:** `Lint → Run ESLint`
 
-**Errors:**
+**Current errors (4 warnings, max-warnings 0):**
 ```
-ESLint:
-- src/components/layout/Header.tsx: 'Package' is defined but never used
-- src/components/layout/ProtectedRoute.tsx: 'Navigate' is defined but never used
-- src/stores/cartStore.ts: 'CartItem' is defined but never used
-
-TypeScript:
-- src/config/api.ts: Property 'env' does not exist on type 'ImportMeta'
-- src/config/auth.ts: Property 'env' does not exist on type 'ImportMeta'
-  (missing vite/client type definitions in tsconfig.json)
+src/components/ui/Badge.tsx:32    — react-refresh/only-export-components
+src/components/ui/Button.tsx:55   — react-refresh/only-export-components
+src/test/test-utils.tsx:18        — react-refresh/only-export-components
+src/test/test-utils.tsx:30        — react-refresh/only-export-components
 ```
 
-**Fix:**
-1. Remove unused imports in `Header.tsx`, `ProtectedRoute.tsx`, `cartStore.ts`
-2. Add `"types": ["vite/client"]` to `tsconfig.json` compilerOptions
+**Fix:** Add targeted `eslint-disable` comments — do NOT restructure files.
+Spec: `wilddog64/shopping-cart-infra/docs/plans/ci-frontend-lint-fix.md`
 
-**Priority:** P1 — assigned to v0.8.0 milestone. See `k3d-manager/docs/issues/2026-03-11-shopping-cart-ci-failures.md`.
+**Assigned to Codex — 2026-03-14**
+Do NOT update this memory-bank until CI shows `completed success`.
