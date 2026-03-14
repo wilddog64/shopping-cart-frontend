@@ -72,9 +72,7 @@ function OrderCard({ order }: { order: Order }) {
                 <h3 className="font-semibold">Order #{order.id.slice(0, 8)}</h3>
                 <Badge variant={statusVariants[order.status]}>{order.status}</Badge>
               </div>
-              <p className="mt-1 text-sm text-gray-500">
-                Placed on {formatDate(order.createdAt)}
-              </p>
+              <p className="mt-1 text-sm text-gray-500">Placed on {formatDate(order.createdAt)}</p>
             </div>
             <div className="text-right">
               <p className="text-lg font-bold">

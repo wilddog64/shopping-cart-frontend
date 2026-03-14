@@ -77,26 +77,14 @@ Based on the codebase structure, the implementation appears stable. Likely activ
 - Keycloak realm `shopping-cart` and client `frontend` must be pre-configured before the app can authenticate
 - The `shopping-cart-infra` repo contains the Keycloak deployment with realm config at `identity/config/realm-shopping-cart.json`
 
-## CI Blocker — OPEN (2026-03-11)
+## CI Blocker — RESOLVED (2026-03-14)
 
-**Failing since:** 2026-03-09
-**Failing steps:** `Lint → Run ESLint` + `Type Check → Run TypeScript compiler`
+**Branch:** `fix/ci-stabilization` — PR #1 open
+**Latest successful run:** `23092523907` (`CI` on push `fix: resolve TypeScript type-check errors blocking CI`)
+**Verified commit:** `ee3820a1d2a26752194c1d259b5f77b476df40c5`
 
-**Errors:**
-```
-ESLint:
-- src/components/layout/Header.tsx: 'Package' is defined but never used
-- src/components/layout/ProtectedRoute.tsx: 'Navigate' is defined but never used
-- src/stores/cartStore.ts: 'CartItem' is defined but never used
+**Summary:**
+- Added targeted `eslint-disable` comments in `src/components/ui/Badge.tsx`, `src/components/ui/Button.tsx`, and `src/test/test-utils.tsx` per spec `wilddog64/shopping-cart-infra/docs/plans/ci-frontend-lint-fix.md`.
+- Ran Prettier on lint job's flagged files so `Lint → Check formatting` stays clean.
 
-TypeScript:
-- src/config/api.ts: Property 'env' does not exist on type 'ImportMeta'
-- src/config/auth.ts: Property 'env' does not exist on type 'ImportMeta'
-  (missing vite/client type definitions in tsconfig.json)
-```
-
-**Fix:**
-1. Remove unused imports in `Header.tsx`, `ProtectedRoute.tsx`, `cartStore.ts`
-2. Add `"types": ["vite/client"]` to `tsconfig.json` compilerOptions
-
-**Priority:** P1 — assigned to v0.8.0 milestone. See `k3d-manager/docs/issues/2026-03-11-shopping-cart-ci-failures.md`.
+Next developer: continue regular feature work; lint + formatting now pass in CI.
