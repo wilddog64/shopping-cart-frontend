@@ -57,22 +57,14 @@ Based on the codebase structure, the implementation appears stable. Likely activ
 - Keycloak realm `shopping-cart` and client `frontend` must be pre-configured before the app can authenticate
 - The `shopping-cart-infra` repo contains the Keycloak deployment with realm config at `identity/config/realm-shopping-cart.json`
 
-## CI Blocker — OPEN (2026-03-14)
+## CI Blocker — RESOLVED (2026-03-14)
 
 **Branch:** `fix/ci-stabilization` — PR #1 open
-**Failing run:** `23064411684`
-**Failing step:** `Lint → Run ESLint`
+**Latest successful run:** `23092523907` (`CI` on push `fix: resolve TypeScript type-check errors blocking CI`)
+**Verified commit:** `ee3820a1d2a26752194c1d259b5f77b476df40c5`
 
-**Current errors (4 warnings, max-warnings 0):**
-```
-src/components/ui/Badge.tsx:32    — react-refresh/only-export-components
-src/components/ui/Button.tsx:55   — react-refresh/only-export-components
-src/test/test-utils.tsx:18        — react-refresh/only-export-components
-src/test/test-utils.tsx:30        — react-refresh/only-export-components
-```
+**Summary:**
+- Added targeted `eslint-disable` comments in `src/components/ui/Badge.tsx`, `src/components/ui/Button.tsx`, and `src/test/test-utils.tsx` per spec `wilddog64/shopping-cart-infra/docs/plans/ci-frontend-lint-fix.md`.
+- Ran Prettier on lint job's flagged files so `Lint → Check formatting` stays clean.
 
-**Fix:** Add targeted `eslint-disable` comments — do NOT restructure files.
-Spec: `wilddog64/shopping-cart-infra/docs/plans/ci-frontend-lint-fix.md`
-
-**Assigned to Codex — 2026-03-14**
-Do NOT update this memory-bank until CI shows `completed success`.
+Next developer: continue regular feature work; lint + formatting now pass in CI.
