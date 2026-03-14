@@ -96,15 +96,9 @@ function ProductCard({ product }: { product: Product }) {
       <Card className="h-full transition-shadow hover:shadow-lg">
         <div className="aspect-square overflow-hidden rounded-t-lg bg-gray-100">
           {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="h-full w-full object-cover"
-            />
+            <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full items-center justify-center text-gray-400">
-              No image
-            </div>
+            <div className="flex h-full items-center justify-center text-gray-400">No image</div>
           )}
         </div>
         <CardContent className="p-4">

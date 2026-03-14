@@ -63,11 +63,7 @@ export default function ProductDetailPage() {
         {/* Product Image */}
         <div className="aspect-square overflow-hidden rounded-lg bg-gray-100">
           {product.imageUrl ? (
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="h-full w-full object-cover"
-            />
+            <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center text-gray-400">
               No image available
@@ -128,12 +124,8 @@ export default function ProductDetailPage() {
             Add to Cart
           </Button>
 
-          {addToCart.isSuccess && (
-            <p className="text-center text-green-600">Added to cart!</p>
-          )}
-          {addToCart.isError && (
-            <p className="text-center text-red-600">Failed to add to cart</p>
-          )}
+          {addToCart.isSuccess && <p className="text-center text-green-600">Added to cart!</p>}
+          {addToCart.isError && <p className="text-center text-red-600">Failed to add to cart</p>}
         </div>
       </div>
     </div>

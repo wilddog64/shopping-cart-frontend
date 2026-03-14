@@ -123,9 +123,7 @@ function CartItemRow({ item, currency }: { item: CartItem; currency: string }) {
       <div className="h-20 w-20 flex-shrink-0 rounded-md bg-gray-100" />
       <div className="flex-1">
         <h3 className="font-medium">{item.name}</h3>
-        <p className="text-sm text-gray-500">
-          {formatCurrency(item.unitPrice, currency)} each
-        </p>
+        <p className="text-sm text-gray-500">{formatCurrency(item.unitPrice, currency)} each</p>
       </div>
       <div className="flex items-center gap-2">
         <Button
@@ -146,9 +144,7 @@ function CartItemRow({ item, currency }: { item: CartItem; currency: string }) {
           <Plus className="h-4 w-4" />
         </Button>
       </div>
-      <div className="w-24 text-right font-medium">
-        {formatCurrency(item.subTotal, currency)}
-      </div>
+      <div className="w-24 text-right font-medium">{formatCurrency(item.subTotal, currency)}</div>
       <Button
         variant="ghost"
         size="icon"

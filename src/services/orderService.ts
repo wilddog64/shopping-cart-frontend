@@ -18,9 +18,7 @@ export const orderService = {
 
     if (status) queryParams.append('status', status)
 
-    const response = await api.get<PaginatedResponse<Order>>(
-      `${ENDPOINTS.ORDERS}?${queryParams}`
-    )
+    const response = await api.get<PaginatedResponse<Order>>(`${ENDPOINTS.ORDERS}?${queryParams}`)
     return response.data
   },
 
