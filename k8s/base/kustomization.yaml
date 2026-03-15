@@ -13,4 +13,5 @@ commonLabels:
 
 images:
   - name: shopping-cart/frontend
+    newName: ghcr.io/wilddog64/shopping-cart-frontend
     newTag: latest
