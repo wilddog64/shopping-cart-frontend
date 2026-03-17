@@ -27,6 +27,50 @@ A modern React-based frontend for the Shopping Cart platform, featuring OAuth2/O
 - **Responsive Design**: Mobile-first UI
 - **Type Safety**: Full TypeScript coverage
 
+## Architecture
+
+```mermaid
+graph TD
+    U[User / Browser] --> FE
+
+    subgraph FE[Frontend — React + Vite]
+        Pages --> Components
+        Pages --> Hooks
+        Hooks --> Services[API Services / Axios]
+        Hooks --> Stores[Zustand State]
+        Pages --> Auth[Auth / oidc-client-ts]
+    end
+
+    Auth --> KC[Keycloak OIDC]
+    Services --> GW[API Gateway / Ingress]
+
+    subgraph Backend[Backend Services]
+        GW --> OS[Order Service]
+        GW --> PC[Product Catalog]
+        GW --> BS[Basket Service]
+    end
+```
+
+### Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant FE as Frontend
+    participant KC as Keycloak
+    participant API as Backend API
+
+    U->>FE: Click Login
+    FE->>KC: Redirect to login page
+    KC-->>U: Login form
+    U->>KC: Submit credentials
+    KC-->>FE: Redirect with tokens
+    FE->>FE: Store JWT in localStorage
+    U->>FE: Access protected route
+    FE->>API: Request + Authorization: Bearer <token>
+    API-->>FE: Authorized response
+```
+
 ## Quick Start
 
 ### Prerequisites
@@ -108,13 +152,11 @@ The frontend communicates with three backend services:
 
 ## Authentication
 
-Authentication is handled via Keycloak OAuth2/OIDC:
+Authentication is handled via Keycloak OAuth2/OIDC. See the [Architecture](#architecture) section for the full auth flow diagram.
 
-1. User clicks "Login" button
-2. Redirected to Keycloak login page
-3. After successful login, redirected back with tokens
-4. JWT tokens are stored in localStorage
-5. Axios interceptor adds Bearer token to API requests
+- User initiates login → redirected to Keycloak
+- On success, tokens returned and stored in localStorage
+- Axios interceptor automatically adds Bearer token to API requests
 
 ### Protected Routes
 
