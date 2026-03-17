@@ -29,47 +29,7 @@ A modern React-based frontend for the Shopping Cart platform, featuring OAuth2/O
 
 ## Architecture
 
-```mermaid
-graph TD
-    U[User / Browser] --> FE
-
-    subgraph FE[Frontend — React + Vite]
-        Pages --> Components
-        Pages --> Hooks
-        Hooks --> Services[API Services / Axios]
-        Hooks --> Stores[Zustand State]
-        Pages --> Auth[Auth / oidc-client-ts]
-    end
-
-    Auth --> KC[Keycloak OIDC]
-    Services --> GW[API Gateway / Ingress]
-
-    subgraph Backend[Backend Services]
-        GW --> OS[Order Service]
-        GW --> PC[Product Catalog]
-        GW --> BS[Basket Service]
-    end
-```
-
-### Authentication Flow
-
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant FE as Frontend
-    participant KC as Keycloak
-    participant API as Backend API
-
-    U->>FE: Click Login
-    FE->>KC: Redirect to login page
-    KC-->>U: Login form
-    U->>KC: Submit credentials
-    KC-->>FE: Redirect with tokens
-    FE->>FE: Store JWT in localStorage
-    U->>FE: Access protected route
-    FE->>API: Request + Authorization: Bearer <token>
-    API-->>FE: Authorized response
-```
+See **[Service Architecture](docs/architecture/README.md)** for component diagram, authentication flow, layer responsibilities, and deployment details.
 
 ## Quick Start
 
@@ -279,6 +239,11 @@ Register a new client in Keycloak:
 5. Client type: `public`
 6. Valid redirect URIs: `http://localhost:3000/*`
 7. Web origins: `http://localhost:3000`
+
+## Documentation
+
+### Architecture
+- **[Service Architecture](docs/architecture/README.md)** — component diagram, authentication flow, layer responsibilities, and deployment details.
 
 ## Related Documentation
 
