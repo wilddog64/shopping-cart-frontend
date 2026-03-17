@@ -15,11 +15,11 @@ graph TD
         Pages --> Hooks
         Hooks --> Services[API Services / Axios]
         Hooks --> Stores[Zustand State]
-        Pages --> Auth[Auth / oidc-client-ts]
+        Pages --> Auth[Auth / react-oidc-context]
     end
 
     Auth --> KC[Keycloak OIDC]
-    Services --> GW[API Gateway / Ingress]
+    Services --> GW[Frontend nginx / Ingress]
 
     subgraph Backend[Backend Services]
         GW --> OS[Order Service]
@@ -41,8 +41,9 @@ sequenceDiagram
     FE->>KC: Redirect to login page
     KC-->>U: Login form
     U->>KC: Submit credentials
-    KC-->>FE: Redirect with tokens
-    FE->>FE: Store JWT in localStorage
+    KC-->>FE: Redirect with authorization code (PKCE)
+    FE->>KC: Exchange code for tokens
+    KC-->>FE: Access + ID tokens
     U->>FE: Access protected route
     FE->>API: Request + Authorization: Bearer <token>
     API-->>FE: Authorized response

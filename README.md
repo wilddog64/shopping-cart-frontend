@@ -112,10 +112,10 @@ The frontend communicates with three backend services:
 
 ## Authentication
 
-Authentication is handled via Keycloak OAuth2/OIDC. See the [Architecture](#architecture) section for the full auth flow diagram.
+Authentication is handled via Keycloak OAuth2/OIDC using PKCE. See the [Architecture](#architecture) section for the full auth flow diagram.
 
 - User initiates login → redirected to Keycloak
-- On success, tokens returned and stored in localStorage
+- On success, authorization code exchanged for tokens via `react-oidc-context`
 - Axios interceptor automatically adds Bearer token to API requests
 
 ### Protected Routes
