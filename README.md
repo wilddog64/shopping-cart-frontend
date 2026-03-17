@@ -27,6 +27,10 @@ A modern React-based frontend for the Shopping Cart platform, featuring OAuth2/O
 - **Responsive Design**: Mobile-first UI
 - **Type Safety**: Full TypeScript coverage
 
+## Architecture
+
+See **[Service Architecture](docs/architecture/README.md)** for component diagram, authentication flow, layer responsibilities, and deployment details.
+
 ## Quick Start
 
 ### Prerequisites
@@ -108,13 +112,11 @@ The frontend communicates with three backend services:
 
 ## Authentication
 
-Authentication is handled via Keycloak OAuth2/OIDC:
+Authentication is handled via Keycloak OAuth2/OIDC using PKCE. See the [Architecture](#architecture) section for the full auth flow diagram.
 
-1. User clicks "Login" button
-2. Redirected to Keycloak login page
-3. After successful login, redirected back with tokens
-4. JWT tokens are stored in localStorage
-5. Axios interceptor adds Bearer token to API requests
+- User initiates login → redirected to Keycloak
+- On success, authorization code exchanged for tokens via `react-oidc-context`
+- Axios interceptor automatically adds Bearer token to API requests
 
 ### Protected Routes
 
@@ -237,6 +239,11 @@ Register a new client in Keycloak:
 5. Client type: `public`
 6. Valid redirect URIs: `http://localhost:3000/*`
 7. Web origins: `http://localhost:3000`
+
+## Documentation
+
+### Architecture
+- **[Service Architecture](docs/architecture/README.md)** — component diagram, authentication flow, layer responsibilities, and deployment details.
 
 ## Related Documentation
 
