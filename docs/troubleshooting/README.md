@@ -53,8 +53,8 @@ audit output in the job logs and open an issue for any high/critical findings.
 
 ### E2E job fails in CI but passes locally
 
-Check if backend service mocks are properly configured in `playwright.config.ts`.
-E2E in CI runs against mock backends, not live services.
+API mocking is done inside the E2E spec files via `page.route(...)` (see `e2e/*.spec.ts`).
+Check that the route intercepts match the actual request paths made by the component under test.
 
 ---
 
@@ -65,7 +65,7 @@ E2E in CI runs against mock backends, not live services.
 Image not yet pushed to ghcr.io or kustomization.yaml has a stale tag.
 
 ```bash
-kubectl describe pod <pod-name> -n shopping-cart
+kubectl describe pod <pod-name> -n shopping-cart-apps
 # Check "Failed to pull image" message for the exact tag
 
 # Verify image exists in ghcr.io
@@ -78,15 +78,16 @@ If the tag is stale, update `k8s/base/kustomization.yaml` in `shopping-cart-infr
 
 ```bash
 kubectl get application shopping-cart-frontend -n cicd -o yaml | grep -A10 conditions
-kubectl get pods -n shopping-cart -l app=shopping-cart-frontend
-kubectl logs -n shopping-cart -l app=shopping-cart-frontend --previous
+kubectl get pods -n shopping-cart-apps -l app=shopping-cart-frontend
+kubectl logs -n shopping-cart-apps -l app=shopping-cart-frontend --previous
 ```
 
 ### Nginx returns 502 for API calls
 
-Istio VirtualService or backend pod not ready.
+Backend pod not ready or Kubernetes service DNS unreachable. nginx proxies directly to
+service DNS names — check that the target pods are Running in `shopping-cart-apps`.
 
 ```bash
-kubectl get virtualservice -n shopping-cart
-kubectl get pods -n shopping-cart
+kubectl get pods -n shopping-cart-apps
+kubectl get svc -n shopping-cart-apps
 ```

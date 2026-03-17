@@ -23,25 +23,31 @@ src/
 ├── components/
 │   ├── layout/      # Header, Footer, page shell
 │   └── ui/          # Reusable primitives (Button, Card, ...)
-├── config/          # Auth config, API base URLs
+├── config/          # Auth config (oidcConfig, getAccessToken), API base URLs
 ├── features/        # Feature-scoped components (ProductList, CartDrawer, ...)
 ├── hooks/           # TanStack Query wrappers (useProducts, useCart, ...)
 ├── pages/           # Route-level components (HomePage, CartPage, ...)
 ├── services/        # Axios API clients per backend service
-├── stores/          # Zustand stores (cartStore, ...)
+├── stores/          # Zustand stores (cartStore)
 ├── test/            # Test utilities and mocks
 ├── types/           # Shared TypeScript types
-└── utils/           # Pure utility functions
+└── utils/           # Utility functions
 ```
 
 ## Authentication Flow
+
+Auth state is managed by `react-oidc-context` (`AuthProvider` in `src/main.tsx`, `useAuth` hook
+in components). Tokens are stored by `oidc-client-ts` — note that the default storage is
+`localStorage`, which is vulnerable to XSS token exfiltration. Consider in-memory storage for
+production hardening.
 
 ```
 User → Login button
      → Keycloak login page (redirect)
      → Token issued (access + refresh)
-     → Stored in localStorage
-     → Axios interceptor injects Bearer token on every request
+     → Managed by react-oidc-context / oidc-client-ts
+     → Axios interceptor (src/services/api.ts) injects Bearer token on every request
+       via getAccessToken() from src/config/auth.ts
 ```
 
 Protected routes (`/cart`, `/orders`, `/orders/:id`) redirect to Keycloak if unauthenticated.
@@ -56,15 +62,18 @@ Keycloak client config:
 | State type | Tool | Example |
 |---|---|---|
 | Server/async | TanStack Query | product list, order history |
-| Client/UI | Zustand | cart item count, auth state |
+| Client/UI | Zustand | cart item count (`cartStore`) |
+| Auth | react-oidc-context | `useAuth()` hook |
 | Form | Local component state | checkout form |
 
 ## Container
 
-Nginx serves the production build on port 80. `nginx.conf` proxies `/api/*` to backend services
-via Istio VirtualService. Built as a multi-stage Docker image — Node 20 builder → Nginx Alpine runtime.
+Nginx serves the production build on port 80. `nginx.conf` proxies `/api/*` paths directly
+to Kubernetes service DNS names in the `shopping-cart-apps` namespace (e.g.
+`order-service.shopping-cart-apps.svc.cluster.local:8081`). Built as a multi-stage Docker
+image — Node 20 builder → Nginx Alpine runtime.
 
 ## Kubernetes
 
-Manifests in `k8s/base/` (Kustomize). Managed by ArgoCD on the Ubuntu k3s app cluster.
-Image tag updated by the CI infra workflow on every push to `main`.
+Manifests in `k8s/base/` (Kustomize), namespace: `shopping-cart-apps`. Managed by ArgoCD on
+the Ubuntu k3s app cluster. Image tag updated by the CI infra workflow on every push to `main`.

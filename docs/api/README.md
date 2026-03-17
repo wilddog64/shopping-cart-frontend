@@ -1,15 +1,20 @@
 # API Reference — Shopping Cart Frontend
 
-The frontend communicates with three backend services through Istio ingress. All requests
-use the Bearer token from Keycloak.
+The frontend communicates with three backend services via `/api/*` prefix paths. In development,
+Vite proxies these paths (see `vite.config.ts`). In production, nginx proxies them directly to
+Kubernetes service DNS names (see `nginx.conf`). All requests include the Bearer token from Keycloak.
 
 ## Backend Services
 
-| Service | Env var | Default prefix |
+| Service | Path prefix | nginx proxy target |
 |---|---|---|
-| Order Service | `VITE_ORDER_SERVICE_URL` | `/api/orders` |
-| Product Catalog | `VITE_PRODUCT_SERVICE_URL` | `/api/products` |
-| Basket Service | `VITE_CART_SERVICE_URL` | `/api/cart` |
+| Order Service | `/api/orders` | `order-service.shopping-cart-apps.svc.cluster.local:8081` |
+| Product Catalog | `/api/products` | `product-catalog.shopping-cart-apps.svc.cluster.local:8082` |
+| Basket Service | `/api/cart` | `basket-service.shopping-cart-apps.svc.cluster.local:8083` |
+
+> The `VITE_*_SERVICE_URL` env vars in `.env.local` should remain relative `/api/...` paths
+> to stay compatible with the Vite dev proxy and nginx prod proxy. Setting absolute URLs
+> bypasses the proxy and introduces CORS issues.
 
 ## Order Service
 
@@ -44,10 +49,13 @@ All requests include:
 Authorization: Bearer <keycloak-access-token>
 ```
 
-Injected automatically by the Axios interceptor in `src/config/`.
+Injected automatically by the Axios request interceptor in `src/services/api.ts`, which reads
+the access token via `getAccessToken()` from `src/config/auth.ts`.
 
 ## Error Handling
 
-- `401` — token expired; Keycloak refresh attempted automatically
-- `403` — insufficient permissions; error page shown
-- `5xx` — toast notification shown; TanStack Query retries up to 3 times
+- `401` — token expired or invalid; the Axios response interceptor logs the error and rejects
+  the promise. Re-auth must be triggered manually (no automatic refresh in current implementation).
+  See `src/services/api.ts`.
+- `403` — insufficient permissions; error propagated to the calling component
+- `5xx` — TanStack Query retries once (`retry: 1`, configured in `src/main.tsx`)
