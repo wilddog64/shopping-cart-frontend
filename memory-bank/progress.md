@@ -54,6 +54,7 @@
 - [x] `k8s/base/kustomization.yaml`
 - [x] `Makefile` with install, dev, build, test, docker-build, docker-run targets
 - [x] `.github/workflows/ci.yml`
+- [x] CI workflow pin updated to `build-push-deploy.yml@999f8d7` for multi-arch images (2026-03-17)
 - [x] `.env.example`
 - [x] `.prettierrc`
 - [x] `.eslintrc.cjs`
