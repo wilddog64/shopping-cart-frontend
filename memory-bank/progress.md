@@ -59,6 +59,15 @@
 - [x] `.prettierrc`
 - [x] `.eslintrc.cjs`
 
+### Documentation (branch: docs/add-frontend-docs — ready for PR)
+- [x] `docs/architecture/README.md` — SPA architecture, Keycloak flow, deployment
+- [x] `docs/api/README.md` — REST endpoints + env var references
+- [x] `docs/troubleshooting/README.md` — Keycloak, proxy, env var, Playwright issues
+- [x] `docs/README.md` — index linking all three docs
+- [x] `docs/testing/README.md` — Vitest + Playwright instructions — commit `d659e8b`
+- [x] `docs/issues/` — `.gitkeep` + standardization issue log — commit `d659e8b`
+- [x] `README.md` reformatted to standard template — commit `38a4ca7` (license MIT→Apache 2.0 fixed)
+
 ## What's Pending / Not Yet Confirmed
 
 - [ ] `src/pages/` — individual page files not individually inspected but expected to be complete
