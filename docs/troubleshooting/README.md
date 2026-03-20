@@ -78,8 +78,8 @@ If the tag is stale, update `k8s/base/kustomization.yaml` in `shopping-cart-infr
 
 ```bash
 kubectl get application shopping-cart-frontend -n cicd -o yaml | grep -A10 conditions
-kubectl get pods -n shopping-cart-apps -l app=shopping-cart-frontend
-kubectl logs -n shopping-cart-apps -l app=shopping-cart-frontend --previous
+kubectl get pods -n shopping-cart-apps -l app.kubernetes.io/name=frontend
+kubectl logs -n shopping-cart-apps -l app.kubernetes.io/name=frontend --previous
 ```
 
 ### Nginx returns 502 for API calls

@@ -2,7 +2,7 @@
 
 The frontend communicates with three backend services via `/api/*` prefix paths. In development,
 Vite proxies these paths (see `vite.config.ts`). In production, nginx proxies them directly to
-Kubernetes service DNS names (see `nginx.conf`). All requests include the Bearer token from Keycloak.
+Kubernetes service DNS names (see `nginx.conf`). Authenticated requests include a Bearer token from Keycloak; unauthenticated paths (e.g. product listing) may omit it.
 
 ## Backend Services
 
