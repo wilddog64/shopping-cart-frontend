@@ -22,20 +22,20 @@ spec:
         - name: frontend
           image: shopping-cart/frontend:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 80
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
-              port: 8080
+              path: /
+              port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /health
-              port: 8080
+              path: /
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 5
             timeoutSeconds: 3
@@ -55,5 +55,11 @@ spec:
             capabilities:
               drop:
                 - ALL
+          volumeMounts:
+            - name: nginx-conf-d
+              mountPath: /etc/nginx/conf.d
       securityContext:
         fsGroup: 101
+      volumes:
+        - name: nginx-conf-d
+          emptyDir: {}
