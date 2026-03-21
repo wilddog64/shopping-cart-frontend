@@ -93,4 +93,4 @@ docker-build:
 
 # Run Docker container
 docker-run:
-	docker run -p 3000:80 shopping-cart/frontend:latest
+	docker run -p 3000:8080 shopping-cart/frontend:latest

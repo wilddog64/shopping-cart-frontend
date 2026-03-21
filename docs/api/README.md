@@ -44,13 +44,14 @@ Kubernetes service DNS names (see `nginx.conf`). Authenticated requests include 
 
 ## Auth Headers
 
-All requests include:
+Authenticated requests include:
 ```
 Authorization: Bearer <keycloak-access-token>
 ```
 
 Injected automatically by the Axios request interceptor in `src/services/api.ts`, which reads
-the access token via `getAccessToken()` from `src/config/auth.ts`.
+the access token via `getAccessToken()` from `src/config/auth.ts`. Unauthenticated paths
+(e.g. `GET /api/products`) omit the header when no token is present.
 
 ## Error Handling
 
