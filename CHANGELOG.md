@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Add `nginx-cache` emptyDir volume at `/var/cache/nginx` so nginx (uid 101) can create cache subdirectories at startup; remove erroneous `conf.d` emptyDir that was hiding the packaged nginx config; restore containerPort/probes/targetPort to 8080 + `/health` (consistent with nginx.conf)
+
 ## [0.1.1] - 2026-03-21
 
 ### Fixed
