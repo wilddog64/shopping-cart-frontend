@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Fixed
-- Correct nginx container port 8080→80; fix readiness/liveness probe path `/health`→`/` and port 8080→80; add emptyDir volume at `/etc/nginx/conf.d` to allow non-root nginx to write config on startup; fix service `targetPort` 8080→80
+- Add `nginx-cache` emptyDir volume at `/var/cache/nginx` so nginx (uid 101) can create cache subdirectories at startup; remove erroneous `conf.d` emptyDir that was hiding the packaged nginx config; restore containerPort/probes/targetPort to 8080 + `/health` (consistent with nginx.conf)
 
 ## [0.1.1] - 2026-03-21
 
