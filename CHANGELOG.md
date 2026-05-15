@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Fixed
+- `.github/workflows/ci.yml` — pass `VITE_KEYCLOAK_URL=http://keycloak.shopping-cart.local` as `build-args` to reusable workflow so the Keycloak URL is baked into the image at build time; update SHA pin to `8c581840` (the infra commit that added `build-args` support)
+- `nginx.conf` — replace `http://keycloak.identity.svc.cluster.local:8080` with `http://keycloak.shopping-cart.local` in CSP `connect-src` so browser OIDC requests to Keycloak are not blocked
 - Add `nginx-cache` emptyDir volume at `/var/cache/nginx` so nginx (uid 101) can create cache subdirectories at startup; remove erroneous `conf.d` emptyDir that was hiding the packaged nginx config; restore containerPort/probes/targetPort to 8080 + `/health` (consistent with nginx.conf)
 
 ## [0.1.1] - 2026-03-21
