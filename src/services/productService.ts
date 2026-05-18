@@ -20,9 +20,7 @@ export const productService = {
     if (category) queryParams.append('category', category)
     if (search) queryParams.append('search', search)
 
-    const response = await api.get<Record<string, unknown>>(
-      `${ENDPOINTS.PRODUCTS}?${queryParams}`
-    )
+    const response = await api.get<Record<string, unknown>>(`${ENDPOINTS.PRODUCTS}?${queryParams}`)
     const raw = response.data as {
       items: Array<Record<string, unknown>>
       total: number
@@ -35,7 +33,7 @@ export const productService = {
         id: String(p.id),
         name: String(p.name),
         description: String(p.description ?? ''),
-        price: Number(p.price),
+        price: Number(p.price ?? 0),
         currency: String(p.currency ?? 'USD'),
         category: String(p.category ?? ''),
         imageUrl: p.image_url ? String(p.image_url) : undefined,
