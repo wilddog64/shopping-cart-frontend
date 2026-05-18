@@ -6,20 +6,29 @@ export interface GetOrdersParams {
   page?: number
   pageSize?: number
   status?: string
+  customerId?: string
 }
 
 export const orderService = {
   async getOrders(params: GetOrdersParams = {}): Promise<PaginatedResponse<Order>> {
-    const { page = 1, pageSize = 10, status } = params
+    const { page = 1, pageSize = 10, status, customerId } = params
     const queryParams = new URLSearchParams({
       page: String(page),
       pageSize: String(pageSize),
     })
 
     if (status) queryParams.append('status', status)
+    if (customerId) queryParams.append('customerId', customerId)
 
-    const response = await api.get<PaginatedResponse<Order>>(`${ENDPOINTS.ORDERS}?${queryParams}`)
-    return response.data
+    const response = await api.get<Order[]>(`${ENDPOINTS.ORDERS}?${queryParams}`)
+    const items = Array.isArray(response.data) ? response.data : []
+    return {
+      data: items,
+      page,
+      pageSize,
+      totalItems: items.length,
+      totalPages: 1,
+    }
   },
 
   async getOrderById(id: string): Promise<Order> {
