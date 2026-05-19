@@ -119,7 +119,7 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          VITE_KEYCLOAK_URL: http://keycloak.identity.svc.cluster.local:8080
+          VITE_KEYCLOAK_URL: https://keycloak.3ai-talk.org
           VITE_KEYCLOAK_REALM: shopping-cart
           VITE_CLIENT_ID: frontend
 
@@ -170,7 +170,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            VITE_KEYCLOAK_URL=http://keycloak.identity.svc.cluster.local:8080
+            VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org
             VITE_KEYCLOAK_REALM=shopping-cart
             VITE_CLIENT_ID=frontend
   publish:
