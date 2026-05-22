@@ -2,6 +2,25 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Products Page', () => {
   test.beforeEach(async ({ page }) => {
+    // Mock authentication — /products is auth-gated
+    const _keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    await page.addInitScript((_keycloakUrl) => {
+      const mockUser = {
+        access_token: 'mock-token',
+        token_type: 'Bearer',
+        profile: {
+          sub: 'user-123',
+          name: 'Test User',
+          email: 'test@example.com',
+        },
+        expires_at: Math.floor(Date.now() / 1000) + 3600,
+      }
+      localStorage.setItem(
+        `oidc.user:${_keycloakUrl}/realms/shopping-cart:frontend`,
+        JSON.stringify(mockUser)
+      )
+    }, _keycloakUrl)
+
     // Mock the products API
     await page.route('**/api/products**', async (route) => {
       await route.fulfill({

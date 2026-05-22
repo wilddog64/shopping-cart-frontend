@@ -18,7 +18,8 @@ test.describe('Cart Page (Unauthenticated)', () => {
 test.describe('Cart Page (Authenticated)', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication by setting localStorage
-    await page.addInitScript(() => {
+    const _keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    await page.addInitScript((_keycloakUrl) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -30,10 +31,10 @@ test.describe('Cart Page (Authenticated)', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        'oidc.user:http://localhost:8080/realms/shopping-cart:frontend',
+        `oidc.user:${_keycloakUrl}/realms/shopping-cart:frontend`,
         JSON.stringify(mockUser)
       )
-    })
+    }, _keycloakUrl)
 
     // Mock cart API
     await page.route('**/api/cart', async (route) => {
@@ -114,7 +115,8 @@ test.describe('Cart Page (Authenticated)', () => {
 test.describe('Empty Cart', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    await page.addInitScript(() => {
+    const _keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    await page.addInitScript((_keycloakUrl) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -126,10 +128,10 @@ test.describe('Empty Cart', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        'oidc.user:http://localhost:8080/realms/shopping-cart:frontend',
+        `oidc.user:${_keycloakUrl}/realms/shopping-cart:frontend`,
         JSON.stringify(mockUser)
       )
-    })
+    }, _keycloakUrl)
 
     // Mock empty cart
     await page.route('**/api/cart', async (route) => {
