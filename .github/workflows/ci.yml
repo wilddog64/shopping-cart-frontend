@@ -181,7 +181,7 @@ jobs:
     with:
       service-name: shopping-cart-frontend
       image-name: ghcr.io/wilddog64/shopping-cart-frontend
-      build-args: VITE_KEYCLOAK_URL=http://keycloak.shopping-cart.local
+      build-args: VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org
     permissions:
       contents: write
       packages: write
