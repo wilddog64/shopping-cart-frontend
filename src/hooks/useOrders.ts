@@ -4,11 +4,12 @@ import { orderService, type GetOrdersParams } from '@/services/orderService'
 
 export function useOrders(params: GetOrdersParams = {}) {
   const auth = useAuth()
+  const customerId = auth.user?.profile?.sub
 
   return useQuery({
-    queryKey: ['orders', params],
-    queryFn: () => orderService.getOrders(params),
-    enabled: auth.isAuthenticated,
+    queryKey: ['orders', params, customerId],
+    queryFn: () => orderService.getOrders({ ...params, customerId }),
+    enabled: auth.isAuthenticated && !!customerId,
   })
 }
 

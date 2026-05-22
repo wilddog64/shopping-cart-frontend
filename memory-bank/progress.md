@@ -54,9 +54,19 @@
 - [x] `k8s/base/kustomization.yaml`
 - [x] `Makefile` with install, dev, build, test, docker-build, docker-run targets
 - [x] `.github/workflows/ci.yml`
+- [x] CI workflow pin updated to `build-push-deploy.yml@999f8d7` for multi-arch images (2026-03-17)
 - [x] `.env.example`
 - [x] `.prettierrc`
 - [x] `.eslintrc.cjs`
+
+### Documentation (branch: docs/add-frontend-docs — ready for PR)
+- [x] `docs/architecture/README.md` — SPA architecture, Keycloak flow, deployment
+- [x] `docs/api/README.md` — REST endpoints + env var references
+- [x] `docs/troubleshooting/README.md` — Keycloak, proxy, env var, Playwright issues
+- [x] `docs/README.md` — index linking all three docs
+- [x] `docs/testing/README.md` — Vitest + Playwright instructions — commit `d659e8b`
+- [x] `docs/issues/` — `.gitkeep` + standardization issue log — commit `d659e8b`
+- [x] `README.md` reformatted to standard template — commit `38a4ca7` (license MIT→Apache 2.0 fixed)
 
 ## What's Pending / Not Yet Confirmed
 

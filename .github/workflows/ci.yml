@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  VITE_KEYCLOAK_URL: https://keycloak.3ai-talk.org
+  VITE_KEYCLOAK_REALM: shopping-cart
+  VITE_CLIENT_ID: frontend
+
 jobs:
   lint:
     name: Lint
@@ -118,10 +123,6 @@ jobs:
 
       - name: Build application
         run: npm run build
-        env:
-          VITE_KEYCLOAK_URL: http://keycloak.identity.svc.cluster.local:8080
-          VITE_KEYCLOAK_REALM: shopping-cart
-          VITE_CLIENT_ID: frontend
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -170,17 +171,19 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            VITE_KEYCLOAK_URL=http://keycloak.identity.svc.cluster.local:8080
-            VITE_KEYCLOAK_REALM=shopping-cart
-            VITE_CLIENT_ID=frontend
+            VITE_KEYCLOAK_URL=${{ env.VITE_KEYCLOAK_URL }}
+            VITE_KEYCLOAK_REALM=${{ env.VITE_KEYCLOAK_REALM }}
+            VITE_CLIENT_ID=${{ env.VITE_CLIENT_ID }}
   publish:
     name: Build, Scan & Push
     needs: [build]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    uses: wilddog64/shopping-cart-infra/.github/workflows/build-push-deploy.yml@8363caf109617e66f2a65be08d66a7e51b8a0e96
+    uses: wilddog64/shopping-cart-infra/.github/workflows/build-push-deploy.yml@8c581840b904f21459fa225c80ddfe54f93ed9aa
     with:
       service-name: shopping-cart-frontend
       image-name: ghcr.io/wilddog64/shopping-cart-frontend
+      # env context is unavailable in reusable workflow with: inputs — value must remain explicit
+      build-args: VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org
     permissions:
       contents: write
       packages: write

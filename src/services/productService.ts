@@ -20,10 +20,32 @@ export const productService = {
     if (category) queryParams.append('category', category)
     if (search) queryParams.append('search', search)
 
-    const response = await api.get<PaginatedResponse<Product>>(
-      `${ENDPOINTS.PRODUCTS}?${queryParams}`
-    )
-    return response.data
+    const response = await api.get<Record<string, unknown>>(`${ENDPOINTS.PRODUCTS}?${queryParams}`)
+    const raw = response.data as {
+      items: Array<Record<string, unknown>>
+      total: number
+      page: number
+      page_size: number
+      pages: number
+    }
+    return {
+      data: raw.items.map((p) => ({
+        id: String(p.id),
+        name: String(p.name),
+        description: String(p.description ?? ''),
+        price: Number(p.price ?? 0),
+        currency: String(p.currency ?? 'USD'),
+        category: String(p.category ?? ''),
+        imageUrl: p.image_url ? String(p.image_url) : undefined,
+        stock: Number(p.quantity ?? 0),
+        createdAt: String(p.created_at ?? ''),
+        updatedAt: String(p.updated_at ?? ''),
+      })),
+      page: raw.page,
+      pageSize: raw.page_size,
+      totalItems: raw.total,
+      totalPages: raw.pages,
+    }
   },
 
   async getProductById(id: string): Promise<Product> {
