@@ -245,6 +245,14 @@ Register a new client in Keycloak:
 ### Architecture
 - **[Service Architecture](docs/architecture/README.md)** — component diagram, authentication flow, layer responsibilities, and deployment details.
 
+## Releases
+
+| Version | Release Date | Notes |
+|---------|--------------|-------|
+| [v0.1.2](https://github.com/wilddog64/shopping-cart-frontend/releases/tag/v0.1.2) | 2026-05-22 | Keycloak URL in CI build-args + nginx CSP fix |
+| [v0.1.1](https://github.com/wilddog64/shopping-cart-frontend/releases/tag/v0.1.1) | 2026-03-21 | Non-root nginx on port 8080 |
+| [v0.1.0](https://github.com/wilddog64/shopping-cart-frontend/releases/tag/v0.1.0) | 2026-03-14 | Initial React + TypeScript + Vite SPA |
+
 ## Related Documentation
 
 - [Shopping Cart Platform](../shopping-cart/README.md)
