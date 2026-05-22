@@ -22,12 +22,14 @@ In `.github/workflows/ci.yml`, for every job:
 | `uses: actions/setup-node@v4` | `uses: actions/setup-node@v4` (no change needed) |
 | `node-version: '20'` | `node-version: '22'` |
 
-The warning is about the **app's Node.js version** (`node-version: '20'`), not the action
-versions. Node.js 22 is the current LTS (since April 2025).
+The deprecation warning is produced by `actions/checkout@v4` and `actions/setup-node@v4`
+which use a Node.js 20 internal runtime. Changing `node-version: '20'` → `'22'` upgrades
+the app build runtime. To also silence the action warning, upgrade to `checkout@v5` /
+`setup-node@v5`. Node.js 22 is the current LTS (since April 2025).
 
 ## Affected Repos
 
-- `shopping-cart-frontend` — `ci.yml` has 5 jobs each with `node-version: '20'`
+- `shopping-cart-frontend` — `ci.yml` has 6 jobs each with `node-version: '20'`
 - `shopping-cart-basket` — likely same pattern
 - `shopping-cart-order` — likely same pattern
 - `shopping-cart-payment` — likely same pattern
@@ -36,8 +38,9 @@ versions. Node.js 22 is the current LTS (since April 2025).
 ## Fix
 
 Update `node-version: '20'` → `node-version: '22'` in all `setup-node` steps.
-Since `node-version` is now centralized as a workflow-level env var in `shopping-cart-frontend`
-(added in PR #17), the fix there is a single-line change:
+The workflow already centralizes `VITE_KEYCLOAK_URL`, `VITE_KEYCLOAK_REALM`, and
+`VITE_CLIENT_ID` as top-level env vars. Add `NODE_VERSION` to the same block to
+centralize the node version:
 
 ```yaml
 # Before

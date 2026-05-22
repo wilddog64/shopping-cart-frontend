@@ -3,8 +3,10 @@ import { test, expect } from '@playwright/test'
 test.describe('Orders Page', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    const _keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
-    await page.addInitScript((_keycloakUrl) => {
+    const keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    const keycloakRealm = process.env.VITE_KEYCLOAK_REALM || 'shopping-cart'
+    const clientId = process.env.VITE_CLIENT_ID || 'frontend'
+    await page.addInitScript(({ keycloakUrl, keycloakRealm, clientId }) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -16,10 +18,10 @@ test.describe('Orders Page', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        `oidc.user:${_keycloakUrl}/realms/shopping-cart:frontend`,
+        `oidc.user:${keycloakUrl}/realms/${keycloakRealm}:${clientId}`,
         JSON.stringify(mockUser)
       )
-    }, _keycloakUrl)
+    }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock orders API
     await page.route('**/api/orders**', async (route) => {
@@ -137,8 +139,10 @@ test.describe('Orders Page', () => {
 test.describe('Order Detail Page', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    const _keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
-    await page.addInitScript((_keycloakUrl) => {
+    const keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    const keycloakRealm = process.env.VITE_KEYCLOAK_REALM || 'shopping-cart'
+    const clientId = process.env.VITE_CLIENT_ID || 'frontend'
+    await page.addInitScript(({ keycloakUrl, keycloakRealm, clientId }) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -150,10 +154,10 @@ test.describe('Order Detail Page', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        `oidc.user:${_keycloakUrl}/realms/shopping-cart:frontend`,
+        `oidc.user:${keycloakUrl}/realms/${keycloakRealm}:${clientId}`,
         JSON.stringify(mockUser)
       )
-    }, _keycloakUrl)
+    }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock order detail API
     await page.route('**/api/orders/order-1', async (route) => {
@@ -224,8 +228,10 @@ test.describe('Order Detail Page', () => {
 test.describe('Empty Orders', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    const _keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
-    await page.addInitScript((_keycloakUrl) => {
+    const keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    const keycloakRealm = process.env.VITE_KEYCLOAK_REALM || 'shopping-cart'
+    const clientId = process.env.VITE_CLIENT_ID || 'frontend'
+    await page.addInitScript(({ keycloakUrl, keycloakRealm, clientId }) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -237,10 +243,10 @@ test.describe('Empty Orders', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        `oidc.user:${_keycloakUrl}/realms/shopping-cart:frontend`,
+        `oidc.user:${keycloakUrl}/realms/${keycloakRealm}:${clientId}`,
         JSON.stringify(mockUser)
       )
-    }, _keycloakUrl)
+    }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock empty orders
     await page.route('**/api/orders**', async (route) => {
