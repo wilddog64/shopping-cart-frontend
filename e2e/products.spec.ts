@@ -29,7 +29,7 @@ test.describe('Products Page', () => {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          data: [
+          items: [
             {
               id: 'prod-1',
               name: 'Test Product 1',
@@ -37,9 +37,10 @@ test.describe('Products Page', () => {
               price: 29.99,
               currency: 'USD',
               category: 'Electronics',
-              stock: 10,
-              createdAt: '2024-01-01',
-              updatedAt: '2024-01-01',
+              quantity: 10,
+              image_url: null,
+              created_at: '2024-01-01',
+              updated_at: '2024-01-01',
             },
             {
               id: 'prod-2',
@@ -48,9 +49,10 @@ test.describe('Products Page', () => {
               price: 49.99,
               currency: 'USD',
               category: 'Clothing',
-              stock: 5,
-              createdAt: '2024-01-01',
-              updatedAt: '2024-01-01',
+              quantity: 5,
+              image_url: null,
+              created_at: '2024-01-01',
+              updated_at: '2024-01-01',
             },
             {
               id: 'prod-3',
@@ -59,15 +61,16 @@ test.describe('Products Page', () => {
               price: 99.99,
               currency: 'USD',
               category: 'Electronics',
-              stock: 0,
-              createdAt: '2024-01-01',
-              updatedAt: '2024-01-01',
+              quantity: 0,
+              image_url: null,
+              created_at: '2024-01-01',
+              updated_at: '2024-01-01',
             },
           ],
+          total: 3,
           page: 1,
-          pageSize: 12,
-          totalItems: 3,
-          totalPages: 1,
+          page_size: 12,
+          pages: 1,
         }),
       })
     })

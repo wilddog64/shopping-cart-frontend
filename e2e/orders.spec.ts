@@ -53,52 +53,46 @@ test.describe('Orders Page', () => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({
-            data: [
-              {
-                id: 'order-1',
-                customerId: 'user-123',
-                items: [
-                  {
-                    id: 'item-1',
-                    productId: 'prod-1',
-                    name: 'Test Product',
-                    quantity: 2,
-                    unitPrice: 29.99,
-                    subTotal: 59.98,
-                  },
-                ],
-                totalAmount: 59.98,
-                currency: 'USD',
-                status: 'CONFIRMED',
-                createdAt: '2024-01-15T10:30:00Z',
-                updatedAt: '2024-01-15T10:30:00Z',
-              },
-              {
-                id: 'order-2',
-                customerId: 'user-123',
-                items: [
-                  {
-                    id: 'item-2',
-                    productId: 'prod-2',
-                    name: 'Another Product',
-                    quantity: 1,
-                    unitPrice: 49.99,
-                    subTotal: 49.99,
-                  },
-                ],
-                totalAmount: 49.99,
-                currency: 'USD',
-                status: 'DELIVERED',
-                createdAt: '2024-01-10T14:00:00Z',
-                updatedAt: '2024-01-12T09:00:00Z',
-              },
-            ],
-            page: 1,
-            pageSize: 10,
-            totalItems: 2,
-            totalPages: 1,
-          }),
+          body: JSON.stringify([
+            {
+              id: 'order-1',
+              customerId: 'user-123',
+              items: [
+                {
+                  id: 'item-1',
+                  productId: 'prod-1',
+                  name: 'Test Product',
+                  quantity: 2,
+                  unitPrice: 29.99,
+                  subTotal: 59.98,
+                },
+              ],
+              totalAmount: 59.98,
+              currency: 'USD',
+              status: 'CONFIRMED',
+              createdAt: '2024-01-15T10:30:00Z',
+              updatedAt: '2024-01-15T10:30:00Z',
+            },
+            {
+              id: 'order-2',
+              customerId: 'user-123',
+              items: [
+                {
+                  id: 'item-2',
+                  productId: 'prod-2',
+                  name: 'Another Product',
+                  quantity: 1,
+                  unitPrice: 49.99,
+                  subTotal: 49.99,
+                },
+              ],
+              totalAmount: 49.99,
+              currency: 'USD',
+              status: 'DELIVERED',
+              createdAt: '2024-01-10T14:00:00Z',
+              updatedAt: '2024-01-12T09:00:00Z',
+            },
+          ]),
         })
       }
     })
