@@ -3,7 +3,10 @@ import { test, expect } from '@playwright/test'
 test.describe('Orders Page', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    await page.addInitScript(() => {
+    const keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    const keycloakRealm = process.env.VITE_KEYCLOAK_REALM || 'shopping-cart'
+    const clientId = process.env.VITE_CLIENT_ID || 'frontend'
+    await page.addInitScript(({ keycloakUrl, keycloakRealm, clientId }) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -15,10 +18,10 @@ test.describe('Orders Page', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        'oidc.user:http://localhost:8080/realms/shopping-cart:frontend',
+        `oidc.user:${keycloakUrl}/realms/${keycloakRealm}:${clientId}`,
         JSON.stringify(mockUser)
       )
-    })
+    }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock orders API
     await page.route('**/api/orders**', async (route) => {
@@ -50,52 +53,46 @@ test.describe('Orders Page', () => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
-          body: JSON.stringify({
-            data: [
-              {
-                id: 'order-1',
-                customerId: 'user-123',
-                items: [
-                  {
-                    id: 'item-1',
-                    productId: 'prod-1',
-                    name: 'Test Product',
-                    quantity: 2,
-                    unitPrice: 29.99,
-                    subTotal: 59.98,
-                  },
-                ],
-                totalAmount: 59.98,
-                currency: 'USD',
-                status: 'CONFIRMED',
-                createdAt: '2024-01-15T10:30:00Z',
-                updatedAt: '2024-01-15T10:30:00Z',
-              },
-              {
-                id: 'order-2',
-                customerId: 'user-123',
-                items: [
-                  {
-                    id: 'item-2',
-                    productId: 'prod-2',
-                    name: 'Another Product',
-                    quantity: 1,
-                    unitPrice: 49.99,
-                    subTotal: 49.99,
-                  },
-                ],
-                totalAmount: 49.99,
-                currency: 'USD',
-                status: 'DELIVERED',
-                createdAt: '2024-01-10T14:00:00Z',
-                updatedAt: '2024-01-12T09:00:00Z',
-              },
-            ],
-            page: 1,
-            pageSize: 10,
-            totalItems: 2,
-            totalPages: 1,
-          }),
+          body: JSON.stringify([
+            {
+              id: 'order-1',
+              customerId: 'user-123',
+              items: [
+                {
+                  id: 'item-1',
+                  productId: 'prod-1',
+                  name: 'Test Product',
+                  quantity: 2,
+                  unitPrice: 29.99,
+                  subTotal: 59.98,
+                },
+              ],
+              totalAmount: 59.98,
+              currency: 'USD',
+              status: 'CONFIRMED',
+              createdAt: '2024-01-15T10:30:00Z',
+              updatedAt: '2024-01-15T10:30:00Z',
+            },
+            {
+              id: 'order-2',
+              customerId: 'user-123',
+              items: [
+                {
+                  id: 'item-2',
+                  productId: 'prod-2',
+                  name: 'Another Product',
+                  quantity: 1,
+                  unitPrice: 49.99,
+                  subTotal: 49.99,
+                },
+              ],
+              totalAmount: 49.99,
+              currency: 'USD',
+              status: 'DELIVERED',
+              createdAt: '2024-01-10T14:00:00Z',
+              updatedAt: '2024-01-12T09:00:00Z',
+            },
+          ]),
         })
       }
     })
@@ -136,7 +133,10 @@ test.describe('Orders Page', () => {
 test.describe('Order Detail Page', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    await page.addInitScript(() => {
+    const keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    const keycloakRealm = process.env.VITE_KEYCLOAK_REALM || 'shopping-cart'
+    const clientId = process.env.VITE_CLIENT_ID || 'frontend'
+    await page.addInitScript(({ keycloakUrl, keycloakRealm, clientId }) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -148,10 +148,10 @@ test.describe('Order Detail Page', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        'oidc.user:http://localhost:8080/realms/shopping-cart:frontend',
+        `oidc.user:${keycloakUrl}/realms/${keycloakRealm}:${clientId}`,
         JSON.stringify(mockUser)
       )
-    })
+    }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock order detail API
     await page.route('**/api/orders/order-1', async (route) => {
@@ -222,7 +222,10 @@ test.describe('Order Detail Page', () => {
 test.describe('Empty Orders', () => {
   test.beforeEach(async ({ page }) => {
     // Mock authentication
-    await page.addInitScript(() => {
+    const keycloakUrl = process.env.VITE_KEYCLOAK_URL || 'http://localhost:8080'
+    const keycloakRealm = process.env.VITE_KEYCLOAK_REALM || 'shopping-cart'
+    const clientId = process.env.VITE_CLIENT_ID || 'frontend'
+    await page.addInitScript(({ keycloakUrl, keycloakRealm, clientId }) => {
       const mockUser = {
         access_token: 'mock-token',
         token_type: 'Bearer',
@@ -234,10 +237,10 @@ test.describe('Empty Orders', () => {
         expires_at: Math.floor(Date.now() / 1000) + 3600,
       }
       localStorage.setItem(
-        'oidc.user:http://localhost:8080/realms/shopping-cart:frontend',
+        `oidc.user:${keycloakUrl}/realms/${keycloakRealm}:${clientId}`,
         JSON.stringify(mockUser)
       )
-    })
+    }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock empty orders
     await page.route('**/api/orders**', async (route) => {

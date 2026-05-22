@@ -219,6 +219,8 @@ src/
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| [v0.1.2](https://github.com/wilddog64/shopping-cart-frontend/releases/tag/v0.1.2) | 2026-05-22 | Keycloak URL in CI build-args + nginx CSP fix |
+| [v0.1.1](https://github.com/wilddog64/shopping-cart-frontend/releases/tag/v0.1.1) | 2026-03-21 | Non-root nginx on port 8080 |
 | [v0.1.0](https://github.com/wilddog64/shopping-cart-frontend/releases/tag/v0.1.0) | 2026-03-14 | Initial React SPA release with Keycloak auth, cart/orders flows, Playwright coverage |
 
 ---
