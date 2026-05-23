@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
+
 ### Fixed
 - `e2e/cart.spec.ts`, `e2e/orders.spec.ts`, `e2e/products.spec.ts`: resolve OIDC `localStorage` key to match `VITE_KEYCLOAK_URL` — hardcoded `http://localhost:8080` prefix caused all authenticated Playwright tests to fail in CI when `VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org`
 - `src/services/productService.ts`: map backend `{items, total, page_size, pages, image_url, quantity}` response to frontend `PaginatedResponse<Product>` type

@@ -247,13 +247,7 @@ test.describe('Empty Orders', () => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({
-          data: [],
-          page: 1,
-          pageSize: 10,
-          totalItems: 0,
-          totalPages: 0,
-        }),
+        body: JSON.stringify([]),
       })
     })
   })
