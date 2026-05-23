@@ -10,6 +10,9 @@
 - Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
 
 ### Fixed
+- `src/services/productService.ts` — fix `pageSize` → `page_size` query param so `GET /api/products?page_size=<n>` returns all product categories (prior hardcoded `pageSize` mismatched backend snake_case, causing only laptops to be returned from the seeding order)
+- `src/services/productService.ts` — fix `getProductById` field mapping to recast backend response `{quantity → stock, image_url → imageUrl, created_at → createdAt, updated_at → updatedAt}` so product detail correctly shows stock status and images
+- `nginx.conf` — fix `proxy_pass` for `/api/cart` to rewrite to `http://basket-service.shopping-cart-apps.svc.cluster.local:8083/api/v1/cart` (backend Gin group routes are under `/api/v1`; missing the version prefix caused all add-to-cart requests to 404)
 - `e2e/cart.spec.ts`, `e2e/orders.spec.ts`, `e2e/products.spec.ts`: resolve OIDC `localStorage` key to match `VITE_KEYCLOAK_URL` — hardcoded `http://localhost:8080` prefix caused all authenticated Playwright tests to fail in CI when `VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org`
 - `src/services/productService.ts`: map backend `{items, total, page_size, pages, image_url, quantity}` response to frontend `PaginatedResponse<Product>` type
 - `src/services/orderService.ts`: add `customerId` to query params; wrap plain `Order[]` response in `PaginatedResponse` shape

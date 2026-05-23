@@ -129,9 +129,9 @@ test.describe('Products Page', () => {
           price: 29.99,
           currency: 'USD',
           category: 'Electronics',
-          stock: 10,
-          createdAt: '2024-01-01',
-          updatedAt: '2024-01-01',
+          quantity: 10,
+          created_at: '2024-01-01',
+          updated_at: '2024-01-01',
         }),
       })
     })
@@ -156,9 +156,9 @@ test.describe('Product Detail Page', () => {
           price: 29.99,
           currency: 'USD',
           category: 'Electronics',
-          stock: 10,
-          createdAt: '2024-01-01',
-          updatedAt: '2024-01-01',
+          quantity: 10,
+          created_at: '2024-01-01',
+          updated_at: '2024-01-01',
         }),
       })
     })
