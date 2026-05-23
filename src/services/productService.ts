@@ -7,18 +7,20 @@ export interface GetProductsParams {
   pageSize?: number
   category?: string
   search?: string
+  q?: string
 }
 
 export const productService = {
   async getProducts(params: GetProductsParams = {}): Promise<PaginatedResponse<Product>> {
-    const { page = 1, pageSize = 12, category, search } = params
+    const { page = 1, pageSize = 12, category, search, q } = params
     const queryParams = new URLSearchParams({
       page: String(page),
       pageSize: String(pageSize),
     })
 
+    const searchTerm = q ?? search
     if (category) queryParams.append('category', category)
-    if (search) queryParams.append('search', search)
+    if (searchTerm) queryParams.append('q', searchTerm)
 
     const response = await api.get<Record<string, unknown>>(`${ENDPOINTS.PRODUCTS}?${queryParams}`)
     const raw = response.data as {
