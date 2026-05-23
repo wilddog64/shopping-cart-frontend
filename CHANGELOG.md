@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+- nginx proxy block (`location ^~ /minio/`) to route browser image requests to MinIO without hardcoded node IPs
+- Wire `q` search param through `productService.ts` to `GET /api/products?q=<term>` for full-text search
+
 ### Changed
 - Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
 
