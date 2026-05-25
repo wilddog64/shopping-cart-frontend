@@ -56,19 +56,7 @@ export const productService = {
 
   async getProductById(id: string): Promise<Product> {
     const response = await api.get<Record<string, unknown>>(ENDPOINTS.PRODUCT_BY_ID(id))
-    const p = response.data as Record<string, unknown>
-    return {
-      id: String(p.id),
-      name: String(p.name),
-      description: String(p.description ?? ''),
-      price: Number(p.price ?? 0),
-      currency: String(p.currency ?? 'USD'),
-      category: String(p.category ?? ''),
-      imageUrl: p.image_url ? String(p.image_url) : undefined,
-      stock: Number(p.quantity ?? 0),
-      createdAt: String(p.created_at ?? ''),
-      updatedAt: String(p.updated_at ?? ''),
-    }
+    return mapProduct(response.data as Record<string, unknown>)
   },
 
   async getCategories(): Promise<string[]> {
