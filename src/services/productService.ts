@@ -56,7 +56,7 @@ export const productService = {
 
   async getProductById(id: string): Promise<Product> {
     const response = await api.get<Record<string, unknown>>(ENDPOINTS.PRODUCT_BY_ID(id))
-    return mapProduct(response.data)
+    return mapProduct(response.data as Record<string, unknown>)
   },
 
   async getCategories(): Promise<string[]> {
