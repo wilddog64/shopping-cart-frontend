@@ -45,23 +45,26 @@ test.describe('Cart Page (Authenticated)', () => {
           status: 200,
           contentType: 'application/json',
           body: JSON.stringify({
-            id: 'cart-1',
-            customerId: 'user-123',
-            items: [
-              {
-                id: 'item-1',
-                productId: 'prod-1',
-                name: 'Test Product',
-                quantity: 2,
-                unitPrice: 29.99,
-                subTotal: 59.98,
-              },
-            ],
-            totalAmount: 59.98,
-            currency: 'USD',
-            createdAt: '2024-01-01',
-            updatedAt: '2024-01-01',
-            expiresAt: '2024-01-08',
+            success: true,
+            data: {
+              id: 'cart-1',
+              customerId: 'user-123',
+              items: [
+                {
+                  id: 'item-1',
+                  productId: 'prod-1',
+                  name: 'Test Product',
+                  quantity: 2,
+                  unitPrice: 29.99,
+                  subTotal: 59.98,
+                },
+              ],
+              totalAmount: 59.98,
+              currency: 'USD',
+              createdAt: '2024-01-01',
+              updatedAt: '2024-01-01',
+              expiresAt: '2024-01-08',
+            },
           }),
         })
       }
@@ -143,14 +146,17 @@ test.describe('Empty Cart', () => {
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          id: 'cart-1',
-          customerId: 'user-123',
-          items: [],
-          totalAmount: 0,
-          currency: 'USD',
-          createdAt: '2024-01-01',
-          updatedAt: '2024-01-01',
-          expiresAt: '2024-01-08',
+          success: true,
+          data: {
+            id: 'cart-1',
+            customerId: 'user-123',
+            items: [],
+            totalAmount: 0,
+            currency: 'USD',
+            createdAt: '2024-01-01',
+            updatedAt: '2024-01-01',
+            expiresAt: '2024-01-08',
+          },
         }),
       })
     })

@@ -2,7 +2,7 @@
 
 **Branch:** `fix/cart-response-unwrap`
 **Repo:** `shopping-cart-frontend`
-**Related spec:** `docs/bugs/2026-05-25-cart-service-response-not-unwrapped.md`
+**Related spec:** `docs/bugs/2026-05-25-cart-service-response-not-unwrapped.md` (in k3d-manager repo, not this repo)
 
 ## What was tested
 
@@ -23,14 +23,14 @@ npm error Missing script: "type-check"
 npm error
 npm error To see a list of scripts, run:
 npm error   npm run
-npm error Log files were not written due to an error writing to the directory: /Users/cliang/.npm/_logs
+npm error Log files were not written due to an error writing to the directory: <HOME>/.npm/_logs
 npm error You can rerun the command with `--loglevel=verbose` to see the logs in your terminal
 ```
 
 `npx tsc -b --pretty false`:
 
 ```text
-error TS5033: Could not write file '/Users/cliang/src/gitrepo/personal/shopping-carts/shopping-cart-frontend/tsconfig.tsbuildinfo': EPERM: operation not permitted, open '/Users/cliang/src/gitrepo/personal/shopping-carts/shopping-cart-frontend/tsconfig.tsbuildinfo'.
+error TS5033: Could not write file '<repo-root>/tsconfig.tsbuildinfo': EPERM: operation not permitted, open '<repo-root>/tsconfig.tsbuildinfo'.
 ```
 
 `npx tsc -p tsconfig.json --noEmit --pretty false`:
