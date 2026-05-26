@@ -2,12 +2,14 @@
 
 ## [Unreleased]
 
+### Changed
+- Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
+
+## [0.1.2] - 2026-05-25
+
 ### Added
 - nginx proxy block (`location ^~ /minio/`) to route browser image requests to MinIO without hardcoded node IPs
 - Wire `q` search param through `productService.ts` to `GET /api/products?q=<term>` for full-text search
-
-### Changed
-- Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
 
 ### Fixed
 - `src/services/cartService.ts` — unwrap basket-service response envelope in cart/checkout methods (`getCart`, `addItem`, `updateItem`, `removeItem`, `checkout`) by returning `response.data.data` instead of `response.data`; `clearCart` unchanged (204 No Content); fixes "Failed to add to cart" error where `cart.items.reduce()` threw TypeError because `cart` was the wrapper object `{ success, data }`, not the `Cart` type; adds `Wrapped<T>` type alias for compile-time safety
