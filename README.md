@@ -211,6 +211,7 @@ src/
 - **[Troubleshooting Guide](docs/troubleshooting/README.md)** — Keycloak redirect fixes, proxy/CORS issues, env var gaps, Playwright setup tips.
 
 ### Issue Logs
+- **[Cart response unwrap: typecheck script missing and tsbuildinfo](docs/issues/2026-05-25-cart-response-unwrap-typecheck-script-missing-and-tsbuildinfo.md)** — `npm run type-check` is not defined; validation uses `npx tsc -p tsconfig.json --noEmit`.
 - **[README + docs structure drift](docs/issues/2026-03-17-readme-standardization.md)** — Notes on the documentation realignment work.
 
 ---

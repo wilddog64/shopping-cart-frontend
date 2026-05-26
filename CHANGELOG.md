@@ -7,7 +7,15 @@
 
 ## [0.1.2] - 2026-05-25
 
+### Added
+- nginx proxy block (`location ^~ /minio/`) to route browser image requests to MinIO without hardcoded node IPs
+- Wire `q` search param through `productService.ts` to `GET /api/products?q=<term>` for full-text search
+
 ### Fixed
+- `src/services/cartService.ts` — unwrap basket-service response envelope in cart/checkout methods (`getCart`, `addItem`, `updateItem`, `removeItem`, `checkout`) by returning `response.data.data` instead of `response.data`; `clearCart` unchanged (204 No Content); fixes "Failed to add to cart" error where `cart.items.reduce()` threw TypeError because `cart` was the wrapper object `{ success, data }`, not the `Cart` type; adds `Wrapped<T>` type alias for compile-time safety
+- `src/services/productService.ts` — fix `pageSize` → `page_size` query param so `GET /api/products?page_size=<n>` returns all product categories (prior hardcoded `pageSize` mismatched backend snake_case, causing only laptops to be returned from the seeding order)
+- `src/services/productService.ts` — fix `getProductById` field mapping to recast backend response `{quantity → stock, image_url → imageUrl, created_at → createdAt, updated_at → updatedAt}` so product detail correctly shows stock status and images
+- `nginx.conf` — fix `proxy_pass` for `/api/cart` to rewrite to `http://basket-service.shopping-cart-apps.svc.cluster.local:8083/api/v1/cart` (backend Gin group routes are under `/api/v1`; missing the version prefix caused all add-to-cart requests to 404)
 - `e2e/cart.spec.ts`, `e2e/orders.spec.ts`, `e2e/products.spec.ts`: resolve OIDC `localStorage` key to match `VITE_KEYCLOAK_URL` — hardcoded `http://localhost:8080` prefix caused all authenticated Playwright tests to fail in CI when `VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org`
 - `src/services/productService.ts`: map backend `{items, total, page_size, pages, image_url, quantity}` response to frontend `PaginatedResponse<Product>` type
 - `src/services/orderService.ts`: add `customerId` to query params; wrap plain `Order[]` response in `PaginatedResponse` shape
