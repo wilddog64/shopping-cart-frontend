@@ -176,17 +176,73 @@ jobs:
             VITE_KEYCLOAK_REALM=${{ env.VITE_KEYCLOAK_REALM }}
             VITE_CLIENT_ID=${{ env.VITE_CLIENT_ID }}
   publish:
-    name: Build, Scan & Push
+    name: Build, Scan, Push & Deploy
     needs: [build]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    uses: wilddog64/shopping-cart-infra/.github/workflows/build-push-deploy.yml@8c581840b904f21459fa225c80ddfe54f93ed9aa
-    with:
-      service-name: shopping-cart-frontend
-      image-name: ghcr.io/wilddog64/shopping-cart-frontend
-      # env context is unavailable in reusable workflow with: inputs — value must remain explicit
-      build-args: VITE_KEYCLOAK_URL=https://keycloak.3ai-talk.org
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
-    secrets:
-      PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build, scan, and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/wilddog64/shopping-cart-frontend:sha-${{ github.sha }}
+            ghcr.io/wilddog64/shopping-cart-frontend:latest
+          build-args: |
+            VITE_KEYCLOAK_URL=${{ env.VITE_KEYCLOAK_URL }}
+            VITE_KEYCLOAK_REALM=${{ env.VITE_KEYCLOAK_REALM }}
+            VITE_CLIENT_ID=${{ env.VITE_CLIENT_ID }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Scan frontend image (Trivy)
+        uses: aquasecurity/trivy-action@v0.35.0
+        continue-on-error: true
+        with:
+          image-ref: ghcr.io/wilddog64/shopping-cart-frontend:sha-${{ github.sha }}
+          severity: CRITICAL,HIGH
+          exit-code: 0
+          ignore-unfixed: true
+          format: table
+
+      - name: Update Kubernetes manifest to the new image tag
+        run: |
+          target_tag="newTag: sha-${{ github.sha }}"
+          if ! grep -qF "$target_tag" k8s/base/kustomization.yaml; then
+            sed -i "s|^    newTag:.*|    $target_tag|" k8s/base/kustomization.yaml
+          fi
+
+          if ! grep -qF "$target_tag" k8s/base/kustomization.yaml; then
+            echo "::error::k8s/base/kustomization.yaml was not updated to $target_tag"
+            exit 1
+          fi
+
+          if git diff --quiet -- k8s/base/kustomization.yaml; then
+            echo "Manifest already matches $target_tag; no commit needed"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s/base/kustomization.yaml
+          git commit -m "ci: update frontend image to sha-${{ github.sha }}"
+          git push origin HEAD:main
