@@ -24,7 +24,7 @@ test.describe('Products Page', () => {
     }, { keycloakUrl, keycloakRealm, clientId })
 
     // Mock the products API
-    await page.route('**/api/products**', async (route) => {
+    await page.route(/\/api\/products\?.*/, async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
