@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- `.githooks/pre-push`: pre-push hook to block accidental direct pushes from feature branches to main; bypass with `ALLOW_MAIN_PUSH=1`
+
 ### Changed
 - Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
 
