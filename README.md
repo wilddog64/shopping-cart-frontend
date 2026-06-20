@@ -211,6 +211,8 @@ src/
 - **[Troubleshooting Guide](docs/troubleshooting/README.md)** — Keycloak redirect fixes, proxy/CORS issues, env var gaps, Playwright setup tips.
 
 ### Issue Logs
+- **[Checkout contract mismatch RCA](docs/issues/2026-05-27-frontend-checkout-contract-mismatch.md)** — root-cause analysis of the frontend/basket checkout contract mismatch.
+- **[OIDC public domain mismatch](docs/issues/2026-05-27-frontend-oidc-public-domain-mismatch.md)** — Keycloak public-domain mismatch breaking the OIDC redirect.
 - **[Cart page "Error loading cart": API route mismatch + response envelope](docs/issues/2026-05-26-cart-page-error-loading-cart-api-route-mismatch-and-response-envelope.md)** — `/api/cart` vs basket `/api/v1/cart` route mismatch and `{success,data}` envelope unwrap; the dev-proxy half is fixed by the `vite.config.ts` rewrite.
 - **[Cart response unwrap: typecheck script missing and tsbuildinfo](docs/issues/2026-05-25-cart-response-unwrap-typecheck-script-missing-and-tsbuildinfo.md)** — `npm run type-check` is not defined; validation uses `npx tsc -p tsconfig.json --noEmit`.
 - **[README + docs structure drift](docs/issues/2026-03-17-readme-standardization.md)** — Notes on the documentation realignment work.
