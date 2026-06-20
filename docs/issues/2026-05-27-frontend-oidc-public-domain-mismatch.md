@@ -3,7 +3,7 @@
 **Date:** 2026-05-27
 **Severity:** Medium — prevents login when accessing via public URL
 **Status:** Open
-**Assignee:** Gemini CLI
+**Affects:** `shopping-cart-frontend`
 
 ## Symptom
 When accessing the frontend via the public Cloudflare URL (https://frontend.3ai-talk.org), clicking the login button results in an "Invalid redirect URL" error page from Keycloak.

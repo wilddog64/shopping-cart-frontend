@@ -3,7 +3,7 @@
 **Date:** 2026-05-27
 **Severity:** High — prevents completion of order flow in the UI
 **Status:** Open
-**Assignee:** Gemini CLI
+**Affects:** `shopping-cart-frontend`
 
 ## Symptom
 In the Frontend UI, clicking "Proceed to Checkout" results in a red error message:
