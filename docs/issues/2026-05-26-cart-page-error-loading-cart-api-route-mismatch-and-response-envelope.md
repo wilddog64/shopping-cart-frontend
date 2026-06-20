@@ -1,23 +1,37 @@
 # Cart page shows "Error loading cart" because the frontend cart API path does not match basket-service
 
-**Date:** 2026-05-26  
+**Date:** 2026-05-26 (filed); resolved across v0.1.2 + the 2026-06-19 dev-proxy fix  
 **Severity:** High (authenticated cart page cannot load)
 **Affects:** `shopping-cart-frontend`
+
+## Status (updated 2026-06-20) — RESOLVED
+
+All three layers now agree on `/api/v1/cart`:
+
+- **Production proxy (`nginx.conf`) — fixed in v0.1.2.** `location /api/cart` already
+  `proxy_pass`es to basket-service `/api/v1/cart`.
+- **Response envelope (`src/services/cartService.ts`) — fixed in v0.1.2.** Already unwraps
+  `response.data.data` from the `{ success, data }` payload.
+- **Dev proxy (`vite.config.ts`) — fixed 2026-06-19.** Added a `rewrite` so `vite dev`
+  also rewrites `/api/cart` → `/api/v1/cart`. This was the last layer still forwarding the
+  path verbatim, so the failure described below reproduced **only under `vite dev`**.
+
+The original report below is retained for history.
 
 ## Problem
 
 The authenticated cart page renders a red `Error loading cart` message instead of cart
 contents.
 
-The frontend is requesting `GET /api/cart`, but the basket service only exposes
-`GET /api/v1/cart`. As a result, the request routed through `nginx.conf` does not match
-the backend route contract and fails before cart data can be rendered.
+The frontend requests `GET /api/cart`, but the basket service only exposes
+`GET /api/v1/cart`. The proxy layer that forwarded `/api/cart` verbatim (the Vite dev
+server) did not match the backend route contract, so the request failed before cart data
+could be rendered. (Production via `nginx.conf` already rewrote the path correctly.)
 
-There is a second contract issue behind the route mismatch: basket-service returns a
-standard wrapper payload (`{ success: true, data: ... }`), while the frontend cart service
-currently treats `response.data` as the raw `Cart` object. Even after the route is fixed,
-the frontend must unwrap `response.data.data` to avoid parsing the response envelope as
-the cart model.
+A second contract issue sits behind the route mismatch: basket-service returns a standard
+wrapper payload (`{ success: true, data: ... }`), and the frontend cart service must unwrap
+`response.data.data` rather than treat `response.data` as the raw `Cart` object. This was
+addressed in `src/services/cartService.ts` (v0.1.2).
 
 ## Evidence
 
@@ -28,9 +42,9 @@ Frontend endpoint configuration:
 
 Basket service route contract:
 
-- [`shopping-cart-basket/cmd/server/main.go`](../../../shopping-cart-basket/cmd/server/main.go)
+- [`shopping-cart-basket cmd/server/main.go`](https://github.com/wilddog64/shopping-cart-basket/blob/main/cmd/server/main.go)
   registers cart routes under `/api/v1/cart`
-- [`shopping-cart-basket/docs/api/README.md`](../../../shopping-cart-basket/docs/api/README.md)
+- [`shopping-cart-basket docs/api/README.md`](https://github.com/wilddog64/shopping-cart-basket/blob/main/docs/api/README.md)
   documents the same `/api/v1/cart` base path and the `{ success, data }` response envelope
 
 Frontend cart loading path:
