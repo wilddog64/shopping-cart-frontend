@@ -24,7 +24,7 @@ export default defineConfig({
       '/api/cart': {
         target: 'http://localhost:8083',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/cart/, '/api/v1/cart'),
+        rewrite: (path) => path.replace(/^\/api\/cart(?=\/|\?|$)/, '/api/v1/cart'),
       },
     },
   },
