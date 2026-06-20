@@ -7,6 +7,10 @@
 
 ### Changed
 - Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
+- `.gitignore` — ignore `vite.config.js` so the `tsc -b` build artifact (a transpiled copy of `vite.config.ts`) is never committed; a stale tracked copy would shadow the `.ts` config since Vite resolves `.js` first.
+
+### Fixed
+- `vite.config.ts` — add `rewrite` to the `/api/cart` dev proxy so `vite dev` rewrites `/api/cart` → `/api/v1/cart`, matching basket-service's Gin `/api/v1` group and the production `nginx.conf` proxy_pass. Previously the dev proxy forwarded `/api/cart` verbatim → basket 404, so the cart page failed only under `vite dev` (production via nginx was already correct). The rewrite anchors on a segment boundary (`/`, `?`, or end) so sibling paths like `/api/cartoon` are not rewritten.
 
 ## [0.1.2] - 2026-05-25
 
