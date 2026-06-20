@@ -6,7 +6,7 @@
 **Assignee:** Gemini CLI
 
 ## Symptom
-When accessing the frontend via the public Cloudflare URL (https://frontend.3ai-talk.org), clicking the login button results in a "Invalid redirect URL" error page from Keycloak.
+When accessing the frontend via the public Cloudflare URL (https://frontend.3ai-talk.org), clicking the login button results in an "Invalid redirect URL" error page from Keycloak.
 
 ## Root Cause Analysis
 Modern browsers (and the react-oidc-context library) dynamically generate the redirect_uri based on the current origin.
@@ -25,7 +25,9 @@ Add the following to redirectUris:
 - https://frontend.3ai-talk.org/*
 
 Add the following to webOrigins:
-- https://frontend.3ai-talk.org (or keep +)
+- https://frontend.3ai-talk.org
+
+(Alternatively, the Keycloak `+` wildcard webOrigin can be retained, which derives allowed origins from the registered redirect URIs.)
 
 ## Verification
 1. Access https://frontend.3ai-talk.org.

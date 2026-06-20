@@ -13,7 +13,7 @@ In the Frontend UI, clicking "Proceed to Checkout" results in a red error messag
 There is a contractual mismatch between the **Frontend** (React) and the **Basket Service** (Go):
 
 1.  **Backend Requirement:** The `shopping-cart-basket` service defines a `CheckoutRequest` model that requires a non-empty `shippingAddress` object. The Go backend uses Gin's `ShouldBindJSON` with `binding:"required"` tags.
-2.  **Frontend Implementation:** The `CartPage.tsx` component calls `cartService.checkout()`, which sends an empty POST body (`{}`) to `/api/v1/cart/checkout`.
+2.  **Frontend Implementation:** The `CartPage.tsx` component calls `cartService.checkout()`, which sends an empty POST body (`{}`) to `/api/cart/checkout` (the proxy layer rewrites this to the basket-service path `/api/v1/cart/checkout`).
 3.  **Result:** The Backend rejects the request with `400 Bad Request` because the mandatory address fields (`street`, `city`, `state`, etc.) are missing.
 
 ## Architectural Context (Event-Driven Checkout)
@@ -35,7 +35,10 @@ The failure occurs at **Step 1**, meaning the event chain never starts.
 You can verify the backend is healthy by sending a manual request with the required data:
 ```bash
 # Example manual checkout via curl
-curl -X POST http://localhost:8080/api/cart/checkout \n  -H "Authorization: Bearer <TOKEN>" \n  -H "Content-Type: application/json" \n  -d '{
+curl -X POST http://localhost:8080/api/cart/checkout \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
     "shippingAddress": {
       "street": "123 Dev Lane",
       "city": "Cloud City",
