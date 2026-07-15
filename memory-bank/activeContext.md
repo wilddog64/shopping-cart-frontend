@@ -1,8 +1,8 @@
 # Active Context: Frontend (React/TypeScript)
 
-## Current Status (2026-03-14)
+## Current Status (2026-07-15)
 
-CI green. All PRs merged to main. Branch protection active.
+Branch `feat/checkout-payment` pushed to origin at `8ad34e5`. Checkout payment frontend flow implemented and verification completed (`npm run lint`, `npm run test`, `npm run build`).
 
 ## What's Implemented
 
@@ -20,8 +20,8 @@ CI green. All PRs merged to main. Branch protection active.
 
 ## Active Task
 
-- **Multi-arch workflow pin** — branch `fix/multiarch-workflow-pin` updates `.github/workflows/ci.yml` to reference infra SHA `999f8d7` (linux/amd64 + linux/arm64 images).
-- **v0.1.0 release** — cut `release/v0.1.0` from main, add CHANGELOG, open PR, tag after merge.
+- **Checkout payment flow** — branch `feat/checkout-payment` adds frontend-orchestrated checkout (`createOrder` → `processPayment` → `updateOrderStatus`) with card, bank, and test-decline tenders. Pushed commit: `8ad34e5`.
+- **Older memory-bank items** — prior notes about multi-arch workflow and `v0.1.0` release have not been revalidated on this branch.
 
 ## Agent Instructions
 

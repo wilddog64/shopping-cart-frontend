@@ -2,6 +2,16 @@
 
 ## What's Built
 
+### Checkout Payment Flow (branch: feat/checkout-payment)
+- [x] Protected `/checkout` route and new `CheckoutPage` with shipping form, order summary, and tender selection
+- [x] Tender options implemented: card, bank (simulated), and deterministic test-decline
+- [x] Frontend checkout orchestration in `useCheckout`: create order, process payment, patch order to `PAID`, then clear cart
+- [x] Payment API wiring: `PAYMENT_SERVICE_URL`, `/api/payments` endpoint config, `paymentService`, and nginx `/api/payments` proxy route
+- [x] Order service expanded with `createOrder` and `updateOrderStatus`
+- [x] Payment/order DTOs added to `src/types/index.ts`, including `PaymentMethod` and `PAID` order status
+- [x] Unit coverage added for `paymentService` and `useCheckout` success/decline/bank-success paths
+- [x] Verification complete on pushed commit `8ad34e5`: `npm run lint`, `npm run test`, `npm run build`
+
 ### Core Application
 - [x] Vite + React 18 + TypeScript project scaffolding
 - [x] TanStack Query + Zustand + React Router provider setup in `main.tsx`
