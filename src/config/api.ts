@@ -1,5 +1,6 @@
 export const API_CONFIG = {
   ORDER_SERVICE_URL: import.meta.env.VITE_ORDER_SERVICE_URL || '/api/orders',
+  PAYMENT_SERVICE_URL: import.meta.env.VITE_PAYMENT_SERVICE_URL || '/api/payments',
   PRODUCT_SERVICE_URL: import.meta.env.VITE_PRODUCT_SERVICE_URL || '/api/products',
   CART_SERVICE_URL: import.meta.env.VITE_CART_SERVICE_URL || '/api/cart',
 } as const
@@ -19,4 +20,8 @@ export const ENDPOINTS = {
   // Order endpoints
   ORDERS: `${API_CONFIG.ORDER_SERVICE_URL}`,
   ORDER_BY_ID: (id: string) => `${API_CONFIG.ORDER_SERVICE_URL}/${id}`,
+  ORDER_STATUS: (id: string) => `${API_CONFIG.ORDER_SERVICE_URL}/${id}/status`,
+
+  // Payment endpoints
+  PAYMENTS: `${API_CONFIG.PAYMENT_SERVICE_URL}`,
 } as const

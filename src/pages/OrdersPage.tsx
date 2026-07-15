@@ -9,6 +9,7 @@ import type { Order, OrderStatus } from '@/types'
 
 const statusVariants: Record<OrderStatus, 'default' | 'success' | 'warning' | 'destructive'> = {
   PENDING: 'warning',
+  PAID: 'success',
   CONFIRMED: 'default',
   PROCESSING: 'default',
   SHIPPED: 'default',

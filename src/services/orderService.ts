@@ -1,6 +1,6 @@
 import api from './api'
 import { ENDPOINTS } from '@/config/api'
-import type { Order, PaginatedResponse } from '@/types'
+import type { CreateOrderRequest, Order, PaginatedResponse, UpdateOrderStatusRequest } from '@/types'
 
 export interface GetOrdersParams {
   page?: number
@@ -33,6 +33,16 @@ export const orderService = {
 
   async getOrderById(id: string): Promise<Order> {
     const response = await api.get<Order>(ENDPOINTS.ORDER_BY_ID(id))
+    return response.data
+  },
+
+  async createOrder(req: CreateOrderRequest): Promise<Order> {
+    const response = await api.post<Order>(ENDPOINTS.ORDERS, req)
+    return response.data
+  },
+
+  async updateOrderStatus(id: string, body: UpdateOrderStatusRequest): Promise<Order> {
+    const response = await api.patch<Order>(ENDPOINTS.ORDER_STATUS(id), body)
     return response.data
   },
 

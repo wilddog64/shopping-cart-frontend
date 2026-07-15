@@ -74,11 +74,16 @@ export interface Order {
 
 export type OrderStatus =
   | 'PENDING'
+  | 'PAID'
   | 'CONFIRMED'
   | 'PROCESSING'
   | 'SHIPPED'
   | 'DELIVERED'
   | 'CANCELLED'
+
+export type PaymentMethod = 'CARD' | 'BANK'
+
+export type PaymentStatus = 'COMPLETED' | 'FAILED'
 
 export interface Address {
   street: string
@@ -86,6 +91,49 @@ export interface Address {
   state: string
   postalCode: string
   country: string
+}
+
+export interface CreateOrderItem {
+  productId: string
+  productName: string
+  quantity: number
+  unitPrice: number
+}
+
+export interface CreateOrderRequest {
+  customerId: string
+  items: CreateOrderItem[]
+  shippingAddress: Address
+  currency: string
+}
+
+export interface UpdateOrderStatusRequest {
+  status: Extract<OrderStatus, 'PAID'>
+  paymentId: string
+  paymentMethod: PaymentMethod
+}
+
+export interface PaymentRequest {
+  orderId: string
+  customerId: string
+  amount: number
+  currency: string
+  gateway: 'mock'
+  cardNumber?: string
+  cardExpMonth?: string
+  cardExpYear?: string
+  cardCvc?: string
+  cardholderName?: string
+  idempotencyKey?: string
+}
+
+export interface PaymentResponse {
+  id: string
+  orderId: string
+  status: PaymentStatus
+  cardLast4?: string
+  cardBrand?: string
+  failureReason?: string
 }
 
 // API Response types
