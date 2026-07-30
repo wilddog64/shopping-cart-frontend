@@ -55,8 +55,14 @@ export default function CheckoutPage() {
                   placeholder={field}
                   value={address[field]}
                   onChange={handleChange(field)}
+                  aria-invalid={errors[field] ? true : undefined}
+                  aria-describedby={errors[field] ? `${field}-error` : undefined}
                 />
-                {errors[field] && <p className="mt-1 text-sm text-red-600">{errors[field]}</p>}
+                {errors[field] && (
+                  <p id={`${field}-error`} className="mt-1 text-sm text-red-600">
+                    {errors[field]}
+                  </p>
+                )}
               </div>
             ))}
             <Button type="submit" className="w-full" size="lg" loading={checkout.isPending}>

@@ -2,6 +2,18 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@/test/test-utils'
 import CheckoutPage from './CheckoutPage'
 import { cartService } from '@/services/cartService'
+import type { Cart } from '@/types'
+
+const EMPTY_CART: Cart = {
+  id: 'cart-1',
+  customerId: 'customer-1',
+  items: [],
+  totalAmount: 0,
+  currency: 'USD',
+  createdAt: '2026-07-30T00:00:00Z',
+  updatedAt: '2026-07-30T00:00:00Z',
+  expiresAt: '2026-07-31T00:00:00Z',
+}
 
 const navigateMock = vi.fn()
 vi.mock('react-router-dom', async () => {
@@ -26,7 +38,7 @@ describe('CheckoutPage', () => {
   })
 
   it('sends the shipping address and navigates to /orders on success', async () => {
-    vi.mocked(cartService.checkout).mockResolvedValue({} as never)
+    vi.mocked(cartService.checkout).mockResolvedValue(EMPTY_CART)
     render(<CheckoutPage />)
     fireEvent.change(screen.getByLabelText('street'), { target: { value: '123 Dev Lane' } })
     fireEvent.change(screen.getByLabelText('city'), { target: { value: 'Cloud City' } })
