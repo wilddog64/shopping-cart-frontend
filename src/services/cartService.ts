@@ -1,6 +1,6 @@
 import api from './api'
 import { ENDPOINTS } from '@/config/api'
-import type { Cart, AddToCartRequest, UpdateCartItemRequest } from '@/types'
+import type { Cart, AddToCartRequest, UpdateCartItemRequest, CheckoutRequest } from '@/types'
 
 type Wrapped<T> = { success: boolean; data: T }
 
@@ -29,8 +29,11 @@ export const cartService = {
     await api.delete(ENDPOINTS.CART)
   },
 
-  async checkout(): Promise<{ orderId: string }> {
-    const response = await api.post<Wrapped<{ orderId: string }>>(ENDPOINTS.CART_CHECKOUT)
-    return response.data.data
+  async checkout(req: CheckoutRequest): Promise<Cart> {
+    const response = await api.post<Wrapped<{ message: string; cart: Cart }>>(
+      ENDPOINTS.CART_CHECKOUT,
+      req
+    )
+    return response.data.data.cart
   },
 }
