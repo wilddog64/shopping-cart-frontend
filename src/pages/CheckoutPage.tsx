@@ -56,18 +56,14 @@ export default function CheckoutPage() {
                   value={address[field]}
                   onChange={handleChange(field)}
                 />
-                {errors[field] && (
-                  <p className="mt-1 text-sm text-red-600">{errors[field]}</p>
-                )}
+                {errors[field] && <p className="mt-1 text-sm text-red-600">{errors[field]}</p>}
               </div>
             ))}
             <Button type="submit" className="w-full" size="lg" loading={checkout.isPending}>
               Place Order
             </Button>
             {checkout.isError && (
-              <p className="text-center text-sm text-red-600">
-                Checkout failed. Please try again.
-              </p>
+              <p className="text-center text-sm text-red-600">Checkout failed. Please try again.</p>
             )}
           </form>
         </CardContent>

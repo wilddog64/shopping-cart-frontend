@@ -78,11 +78,7 @@ export default function CartPage() {
                 <span>Total</span>
                 <span>{formatCurrency(cart.totalAmount, cart.currency)}</span>
               </div>
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={handleCheckout}
-              >
+              <Button className="w-full" size="lg" onClick={handleCheckout}>
                 Proceed to Checkout
               </Button>
             </CardContent>
