@@ -8,6 +8,7 @@
 - `.githooks/pre-push`: pre-push hook to block accidental direct pushes from feature branches to main; bypass with `ALLOW_MAIN_PUSH=1`
 
 ### Changed
+- `.github/dependabot.yml` — defer major bumps for `typescript`, `react-oidc-context`, `tailwindcss`, `@typescript-eslint/*`, and `eslint` via `ignore` rules (each needs a dedicated migration; minor/patch still flow). Clears the CI-failing major PRs from the Dependabot backlog until those upgrades are scheduled.
 - Upgrade Node.js 20 → 22 in CI workflow (all 6 setup-node steps) and Dockerfile build stage
 - `.gitignore` — ignore `vite.config.js` so the `tsc -b` build artifact (a transpiled copy of `vite.config.ts`) is never committed; a stale tracked copy would shadow the `.ts` config since Vite resolves `.js` first.
 - `k8s/base/deployment.yaml`: add explicit `strategy: RollingUpdate` with `maxSurge: 0` / `maxUnavailable: 1` so rollouts complete on the single-node hostinger cluster instead of wedging with an unschedulable surge pod (previously relied on the Kubernetes default surge)
