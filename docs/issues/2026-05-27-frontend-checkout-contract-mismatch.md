@@ -2,7 +2,10 @@
 
 **Date:** 2026-05-27
 **Severity:** High — prevents completion of order flow in the UI
-**Status:** Open
+**Status:** In progress (2026-07-30) — being fixed under
+`docs/plans/checkout-contract-alignment.md`. Re-confirmed live 2026-07-30; see
+`k3d-manager/docs/issues/2026-07-30-frontend-checkout-contract-mismatch.md` for the fresh
+evidence and the additional `orderId → /orders/undefined` mismatch this doc missed.
 **Assignee:** Gemini CLI
 
 ## Symptom

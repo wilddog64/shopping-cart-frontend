@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react'
-import { useCart, useUpdateCartItem, useRemoveCartItem, useCheckout } from '@/hooks/useCart'
+import { useCart, useUpdateCartItem, useRemoveCartItem } from '@/hooks/useCart'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
@@ -10,15 +10,9 @@ import type { CartItem } from '@/types'
 export default function CartPage() {
   const navigate = useNavigate()
   const { data: cart, isLoading, error } = useCart()
-  const checkout = useCheckout()
 
-  const handleCheckout = async () => {
-    try {
-      const result = await checkout.mutateAsync()
-      navigate(`/orders/${result.orderId}`)
-    } catch (err) {
-      console.error('Checkout failed:', err)
-    }
+  const handleCheckout = () => {
+    navigate('/checkout')
   }
 
   if (isLoading) {
@@ -84,19 +78,9 @@ export default function CartPage() {
                 <span>Total</span>
                 <span>{formatCurrency(cart.totalAmount, cart.currency)}</span>
               </div>
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={handleCheckout}
-                loading={checkout.isPending}
-              >
+              <Button className="w-full" size="lg" onClick={handleCheckout}>
                 Proceed to Checkout
               </Button>
-              {checkout.isError && (
-                <p className="text-center text-sm text-red-600">
-                  Checkout failed. Please try again.
-                </p>
-              )}
             </CardContent>
           </Card>
         </div>

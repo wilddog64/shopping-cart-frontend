@@ -13,6 +13,7 @@
 - `k8s/base/deployment.yaml`: add explicit `strategy: RollingUpdate` with `maxSurge: 0` / `maxUnavailable: 1` so rollouts complete on the single-node hostinger cluster instead of wedging with an unschedulable surge pod (previously relied on the Kubernetes default surge)
 
 ### Fixed
+- Checkout contract alignment with the basket service: checkout now collects and validates a shipping address (`street/city/state/postalCode/country`) on a new protected `/checkout` page and sends it as `{ shippingAddress }`, fixing the HTTP 400 the basket returned for the previous empty-body POST. Basket checkout is asynchronous (returns `{ message, cart }`, no `orderId`), so on success the app navigates to the orders list (`/orders`) instead of `/orders/${orderId}` — removing the `/orders/undefined` dead-end. Frontend-only; no backend change. Spec: `docs/plans/checkout-contract-alignment.md`.
 - `vite.config.ts` — add `rewrite` to the `/api/cart` dev proxy so `vite dev` rewrites `/api/cart` → `/api/v1/cart`, matching basket-service's Gin `/api/v1` group and the production `nginx.conf` proxy_pass. Previously the dev proxy forwarded `/api/cart` verbatim → basket 404, so the cart page failed only under `vite dev` (production via nginx was already correct). The rewrite anchors on a segment boundary (`/`, `?`, or end) so sibling paths like `/api/cartoon` are not rewritten.
 
 ## [0.1.2] - 2026-05-25

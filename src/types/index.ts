@@ -88,6 +88,10 @@ export interface Address {
   country: string
 }
 
+export interface CheckoutRequest {
+  shippingAddress: Address
+}
+
 // API Response types
 export interface ApiError {
   message: string
