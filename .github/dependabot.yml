@@ -24,11 +24,23 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "eslint"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-plugin-react-refresh"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # node major deferred — stay on the current LTS line (22). Minor/patch and
+      # non-node images (nginx) still flow.
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # Action major bumps deferred — review and schedule each manually.
+      # Minor/patch (including security fixes) still flow.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
