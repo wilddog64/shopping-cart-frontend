@@ -1,5 +1,7 @@
 # Progress: Shopping Cart Frontend
 
+- [x] **Stripe Elements checkout COMPLETE `88ab4c8` on `origin/feat/stripe-checkout-elements` (2026-08-01).** Added Stripe dependencies, publishable-key config, 402-aware orchestrator client, non-optimistic cart invalidation, Elements card form, and four checkout tests; all specified gates passed.
+
 ## What's Built
 
 ### Core Application
