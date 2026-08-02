@@ -20,6 +20,8 @@ CI green. All PRs merged to main. Branch protection active.
 
 ## Active Task
 
+- **Stripe publishable-key image wiring** — `feat/stripe-live` commit `d1b3726` adds the Vite Stripe build ARG and repository-variable build args to both CI image builds; pushed to origin. Existing untracked planning docs were preserved.
+
 - **Multi-arch workflow pin** — branch `fix/multiarch-workflow-pin` updates `.github/workflows/ci.yml` to reference infra SHA `999f8d7` (linux/amd64 + linux/arm64 images).
 - **v0.1.0 release** — cut `release/v0.1.0` from main, add CHANGELOG, open PR, tag after merge.
 

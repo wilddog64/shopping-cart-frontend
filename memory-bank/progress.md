@@ -1,5 +1,9 @@
 # Progress: Shopping Cart Frontend
 
+## Recent Task
+
+- [x] Wired `VITE_STRIPE_PUBLISHABLE_KEY` into Docker and both CI build-args blocks (`d1b3726`), using `vars` with no key committed; pushed on `feat/stripe-live`.
+
 ## What's Built
 
 ### Core Application
