@@ -19,6 +19,7 @@ ARG VITE_CLIENT_ID=frontend
 ARG VITE_ORDER_SERVICE_URL=/api/orders
 ARG VITE_PRODUCT_SERVICE_URL=/api/products
 ARG VITE_CART_SERVICE_URL=/api/cart
+ARG VITE_STRIPE_PUBLISHABLE_KEY
 
 # Build the application
 RUN npm run build
