@@ -180,11 +180,12 @@ jobs:
   publish:
     name: Build, Scan, Push & Deploy
     needs: [build]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'ci(deploy):')
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
         with:
@@ -227,7 +228,9 @@ jobs:
           ignore-unfixed: true
           format: table
 
-      - name: Update Kubernetes manifest to the new image tag
+      - name: Open PR to update Kubernetes manifest to the new image tag
+        env:
+          GH_TOKEN: ${{ secrets.CI_DEPLOY_PAT }}
         run: |
           target_tag="newTag: sha-${{ github.sha }}"
           if ! grep -qF "$target_tag" k8s/base/kustomization.yaml; then
@@ -240,12 +243,19 @@ jobs:
           fi
 
           if git diff --quiet -- k8s/base/kustomization.yaml; then
-            echo "Manifest already matches $target_tag; no commit needed"
+            echo "Manifest already matches $target_tag; nothing to deploy"
             exit 0
           fi
 
+          branch="ci/frontend-image-sha-${{ github.sha }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
           git add k8s/base/kustomization.yaml
-          git commit -m "ci: update frontend image to sha-${{ github.sha }}"
-          git push origin HEAD:main
+          git commit -m "ci(deploy): frontend image sha-${{ github.sha }}"
+          git push origin "$branch"
+
+          gh pr create --base main --head "$branch" \
+            --title "ci(deploy): frontend image sha-${{ github.sha }}" \
+            --body "Automated image bump from CI. Auto-merges once required checks pass."
+          gh pr merge "$branch" --auto --squash --delete-branch
