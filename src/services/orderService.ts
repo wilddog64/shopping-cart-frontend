@@ -1,12 +1,21 @@
 import api from './api'
 import { ENDPOINTS } from '@/config/api'
-import type { Order, PaginatedResponse } from '@/types'
+import type { Order, PaginatedResponse, OrderCheckoutRequest, CheckoutResult } from '@/types'
 
 export interface GetOrdersParams {
   page?: number
   pageSize?: number
   status?: string
   customerId?: string
+}
+
+interface CheckoutResponseBody {
+  orderId: string
+  amount: string
+  currency: string
+  paymentStatus: 'PAID' | 'FAILED'
+  retryable?: boolean
+  failureReason?: string
 }
 
 export const orderService = {
@@ -39,5 +48,21 @@ export const orderService = {
   async cancelOrder(id: string): Promise<Order> {
     const response = await api.post<Order>(`${ENDPOINTS.ORDER_BY_ID(id)}/cancel`)
     return response.data
+  },
+
+  async checkout(req: OrderCheckoutRequest): Promise<CheckoutResult> {
+    const response = await api.post<CheckoutResponseBody>(ENDPOINTS.ORDER_CHECKOUT, req, {
+      validateStatus: (status) => (status >= 200 && status < 300) || status === 402,
+    })
+    const body = response.data
+    if (body.paymentStatus === 'PAID') {
+      return { status: 'PAID', orderId: body.orderId, amount: body.amount, currency: body.currency }
+    }
+    return {
+      status: 'FAILED',
+      orderId: body.orderId,
+      retryable: body.retryable ?? true,
+      failureReason: body.failureReason ?? 'Payment failed. Please try again.',
+    }
   },
 }
