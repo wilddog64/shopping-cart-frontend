@@ -1,5 +1,7 @@
 # Progress: Shopping Cart Frontend
 
+- [x] **Frontend deploy pipeline hardening** — `077c154` applies the three exact workflow blocks: `ci(deploy)` loop guard, `pull-requests: write`, and PAT-backed auto-merged manifest PR flow. `actionlint` passed; pushed to `fix/frontend-deploy-pipeline`.
+
 ## Recent Task
 
 - [x] Wired `VITE_STRIPE_PUBLISHABLE_KEY` into Docker and both CI build-args blocks (`d1b3726`), using `vars` with no key committed; pushed on `feat/stripe-live`.
