@@ -1,8 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from 'react-oidc-context'
 import { cartService } from '@/services/cartService'
+import { orderService } from '@/services/orderService'
 import { useCartStore } from '@/stores/cartStore'
-import type { AddToCartRequest, UpdateCartItemRequest, CheckoutRequest } from '@/types'
+import type {
+  AddToCartRequest,
+  UpdateCartItemRequest,
+  OrderCheckoutRequest,
+  CheckoutResult,
+} from '@/types'
 
 export function useCart() {
   const auth = useAuth()
@@ -74,14 +80,14 @@ export function useClearCart() {
 
 export function useCheckout() {
   const queryClient = useQueryClient()
-  const clearCart = useCartStore((state) => state.clearCart)
 
-  return useMutation({
-    mutationFn: (req: CheckoutRequest) => cartService.checkout(req),
-    onSuccess: () => {
-      clearCart()
-      queryClient.invalidateQueries({ queryKey: ['cart'] })
-      queryClient.invalidateQueries({ queryKey: ['orders'] })
+  return useMutation<CheckoutResult, Error, OrderCheckoutRequest>({
+    mutationFn: (req) => orderService.checkout(req),
+    onSuccess: (result) => {
+      if (result.status === 'PAID') {
+        queryClient.invalidateQueries({ queryKey: ['cart'] })
+        queryClient.invalidateQueries({ queryKey: ['orders'] })
+      }
     },
   })
 }
