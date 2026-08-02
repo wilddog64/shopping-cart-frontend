@@ -36,14 +36,20 @@ function CheckoutForm() {
     const cardElement = elements.getElement(CardElement)
     if (!cardElement) return
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: cardElement })
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    })
     if (error || !paymentMethod) {
       setCardError(error?.message ?? 'Card details are invalid.')
       return
     }
 
     try {
-      const result = await checkout.mutateAsync({ shippingAddress: address, paymentMethodId: paymentMethod.id })
+      const result = await checkout.mutateAsync({
+        shippingAddress: address,
+        paymentMethodId: paymentMethod.id,
+      })
       if (result.status === 'PAID') navigate(`/orders/${result.orderId}`)
       else setFailure(result.failureReason)
     } catch (err) {
@@ -55,23 +61,52 @@ function CheckoutForm() {
     <div className="mx-auto max-w-lg space-y-6">
       <h1 className="text-2xl font-bold">Checkout</h1>
       <Card>
-        <CardHeader><CardTitle>Shipping Address</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>Shipping Address</CardTitle>
+        </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {(Object.keys(EMPTY_ADDRESS) as (keyof Address)[]).map((field) => (
               <div key={field}>
-                <Input aria-label={field} placeholder={field} value={address[field]} onChange={handleChange(field)} aria-invalid={errors[field] ? true : undefined} aria-describedby={errors[field] ? `${field}-error` : undefined} />
-                {errors[field] && <p id={`${field}-error`} className="mt-1 text-sm text-red-600">{errors[field]}</p>}
+                <Input
+                  aria-label={field}
+                  placeholder={field}
+                  value={address[field]}
+                  onChange={handleChange(field)}
+                  aria-invalid={errors[field] ? true : undefined}
+                  aria-describedby={errors[field] ? `${field}-error` : undefined}
+                />
+                {errors[field] && (
+                  <p id={`${field}-error`} className="mt-1 text-sm text-red-600">
+                    {errors[field]}
+                  </p>
+                )}
               </div>
             ))}
             <div>
               <label className="mb-1 block text-sm font-medium">Card details</label>
-              <div className="rounded-md border border-gray-300 p-3"><CardElement options={{ hidePostalCode: true }} /></div>
-              {cardError && <p id="card-error" className="mt-1 text-sm text-red-600">{cardError}</p>}
+              <div className="rounded-md border border-gray-300 p-3">
+                <CardElement options={{ hidePostalCode: true }} />
+              </div>
+              {cardError && (
+                <p id="card-error" className="mt-1 text-sm text-red-600">
+                  {cardError}
+                </p>
+              )}
             </div>
-            <Button type="submit" className="w-full" size="lg" loading={checkout.isPending} disabled={!stripe}>Place Order</Button>
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              loading={checkout.isPending}
+              disabled={!stripe}
+            >
+              Place Order
+            </Button>
             {failure && <p className="text-center text-sm text-red-600">{failure}</p>}
-            {checkout.isError && !failure && <p className="text-center text-sm text-red-600">Checkout failed. Please try again.</p>}
+            {checkout.isError && !failure && (
+              <p className="text-center text-sm text-red-600">Checkout failed. Please try again.</p>
+            )}
           </form>
         </CardContent>
       </Card>
@@ -81,7 +116,18 @@ function CheckoutForm() {
 
 export default function CheckoutPage() {
   if (!stripePromise) {
-    return <div className="mx-auto max-w-lg space-y-6"><h1 className="text-2xl font-bold">Checkout</h1><p className="text-sm text-red-600">Payments are not configured. Set VITE_STRIPE_PUBLISHABLE_KEY to enable checkout.</p></div>
+    return (
+      <div className="mx-auto max-w-lg space-y-6">
+        <h1 className="text-2xl font-bold">Checkout</h1>
+        <p className="text-sm text-red-600">
+          Payments are not configured. Set VITE_STRIPE_PUBLISHABLE_KEY to enable checkout.
+        </p>
+      </div>
+    )
   }
-  return <Elements stripe={stripePromise}><CheckoutForm /></Elements>
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+  )
 }

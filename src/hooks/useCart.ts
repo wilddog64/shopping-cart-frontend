@@ -3,7 +3,12 @@ import { useAuth } from 'react-oidc-context'
 import { cartService } from '@/services/cartService'
 import { orderService } from '@/services/orderService'
 import { useCartStore } from '@/stores/cartStore'
-import type { AddToCartRequest, UpdateCartItemRequest, OrderCheckoutRequest, CheckoutResult } from '@/types'
+import type {
+  AddToCartRequest,
+  UpdateCartItemRequest,
+  OrderCheckoutRequest,
+  CheckoutResult,
+} from '@/types'
 
 export function useCart() {
   const auth = useAuth()

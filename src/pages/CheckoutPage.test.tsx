@@ -42,16 +42,37 @@ describe('CheckoutPage', () => {
   })
 
   it('creates a PaymentMethod, checks out, and navigates to the order on PAID', async () => {
-    vi.mocked(orderService.checkout).mockResolvedValue({ status: 'PAID', orderId: 'ord-1', amount: '21.00', currency: 'USD' })
+    vi.mocked(orderService.checkout).mockResolvedValue({
+      status: 'PAID',
+      orderId: 'ord-1',
+      amount: '21.00',
+      currency: 'USD',
+    })
     render(<CheckoutPage />)
     fillAddress()
     fireEvent.click(screen.getByRole('button', { name: /place order/i }))
-    await waitFor(() => expect(orderService.checkout).toHaveBeenCalledWith({ shippingAddress: { street: '123 Dev Lane', city: 'Cloud City', state: 'K8s', postalCode: '10101', country: 'US' }, paymentMethodId: 'pm_card_visa' }))
+    await waitFor(() =>
+      expect(orderService.checkout).toHaveBeenCalledWith({
+        shippingAddress: {
+          street: '123 Dev Lane',
+          city: 'Cloud City',
+          state: 'K8s',
+          postalCode: '10101',
+          country: 'US',
+        },
+        paymentMethodId: 'pm_card_visa',
+      })
+    )
     await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/orders/ord-1'))
   })
 
   it('shows the failure reason and does not navigate when payment is declined', async () => {
-    vi.mocked(orderService.checkout).mockResolvedValue({ status: 'FAILED', orderId: 'ord-1', retryable: true, failureReason: 'Your card was declined.' })
+    vi.mocked(orderService.checkout).mockResolvedValue({
+      status: 'FAILED',
+      orderId: 'ord-1',
+      retryable: true,
+      failureReason: 'Your card was declined.',
+    })
     render(<CheckoutPage />)
     fillAddress()
     fireEvent.click(screen.getByRole('button', { name: /place order/i }))
