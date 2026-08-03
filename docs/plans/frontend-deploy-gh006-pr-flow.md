@@ -168,7 +168,7 @@ already enabled and `required_approving_review_count` is 0 on this repo, so no h
 ## Rules
 
 - `actionlint .github/workflows/ci.yml` — zero errors.
-- No other file touched. No `pk_`/`sk_`/token literal anywhere.
+- No functional/source file other than `.github/workflows/ci.yml` is touched (documentation and `memory-bank/` updates are expected and allowed). No `pk_`/`sk_`/token literal anywhere.
 - Do NOT change the `build-args` (the `VITE_STRIPE_PUBLISHABLE_KEY` wiring stays).
 
 ## Definition of Done
@@ -187,7 +187,7 @@ ci(frontend): deploy image via auto-merged PR instead of pushing to protected ma
 
 - Do NOT create a PR for THIS change (Claude handles PR creation after verifying).
 - Do NOT skip pre-commit hooks (`--no-verify`).
-- Do NOT modify any file other than `.github/workflows/ci.yml`.
+- Do NOT modify any functional/source file other than `.github/workflows/ci.yml` (documentation and `memory-bank/` updates are the expected exception).
 - Do NOT add a branch-protection-bypass token — the PAT is PR-scoped only; checks still gate.
 - Do NOT commit to `main` — work on `fix/frontend-deploy-pipeline`.
 

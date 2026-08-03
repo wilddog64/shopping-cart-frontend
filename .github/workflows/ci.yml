@@ -255,7 +255,7 @@ jobs:
           git commit -m "ci(deploy): frontend image sha-${{ github.sha }}"
           git push origin "$branch"
 
-          gh pr create --base main --head "$branch" \
+          pr_url=$(gh pr create --base main --head "$branch" \
             --title "ci(deploy): frontend image sha-${{ github.sha }}" \
-            --body "Automated image bump from CI. Auto-merges once required checks pass."
-          gh pr merge "$branch" --auto --squash --delete-branch
+            --body "Automated image bump from CI. Auto-merges once required checks pass.")
+          gh pr merge "$pr_url" --auto --squash --delete-branch
