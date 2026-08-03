@@ -42,9 +42,16 @@ Doing this proactively on `main` clears the recurring red before the next weekly
 ## Status
 
 - #68 → superseded/closed. #73 → closed by Dependabot ("updatable in another way") once the
-  major bumps became ignored and the group recomposed. The group will be recreated on the next
-  weekly run and will hit this same Prettier drift until the two files are reformatted on `main`.
-- Deferred by user decision (2026-08-02): investigate only, do not merge the group this session.
+  major bumps became ignored and the group recomposed. #86 → recreated group (12 updates),
+  same Lint failure.
+- **RESOLVED 2026-08-03** — PR #87 (**MERGED** `7e72de5`) pins Prettier `^3.9.6` on `main` and
+  pre-formats `ProtectedRoute.tsx` + `types/index.ts` to the 3.9 style. Verified 3.7.4 rejects
+  the 3.9 format, so the version bump was required (a reformat alone would move the red, not clear
+  it). `main` CI (Prettier 3.9.6) now passes on these files; the recreated group #86 was rebased
+  onto the fixed `main` and no longer needs its own Prettier bump.
+- Process fix applied: the formatter version is now pinned (`^3.9.6`), so a future formatter
+  minor/patch bump inside the group can still drift — the durable guard is a pinned exact version
+  or a `prettier --write` pre-commit hook (follow-up, not done here).
 
 ## Process note
 
