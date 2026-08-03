@@ -211,11 +211,11 @@ src/
 - **[Troubleshooting Guide](docs/troubleshooting/README.md)** — Keycloak redirect fixes, proxy/CORS issues, env var gaps, Playwright setup tips.
 
 ### Issue Logs
+- **[npm-minor-patch group Lint / Prettier drift](docs/issues/2026-08-02-npm-minor-patch-group-lint-prettier-drift.md)** — the weekly Dependabot group PR fails Lint on a Prettier 3.7→3.9 bump that reformats 2 files already on `main`; fixed by upgrading Prettier to `^3.9.6` **and** reformatting the 2 files (a reformat alone won't do — the old Prettier rejects the new style).
 - **[Copilot PR #70 review findings](docs/issues/2026-08-02-copilot-pr70-review-findings.md)** — CHANGELOG `[Unreleased]` still named `CI_DEPLOY_PAT`; folded into one accurate `PACKAGES_TOKEN` entry.
 - **[Copilot PR #69 review findings](docs/issues/2026-08-02-copilot-pr69-review-findings.md)** — deploy step: merge the auto-generated deploy PR by URL (not branch name); clarify spec scope wording.
 - **[Checkout contract mismatch RCA](docs/issues/2026-05-27-frontend-checkout-contract-mismatch.md)** — root-cause analysis of the frontend/basket checkout contract mismatch.
 - **[OIDC public domain mismatch](docs/issues/2026-05-27-frontend-oidc-public-domain-mismatch.md)** — Keycloak public-domain mismatch breaking the OIDC redirect.
-- **[Cart page "Error loading cart": API route mismatch + response envelope](docs/issues/2026-05-26-cart-page-error-loading-cart-api-route-mismatch-and-response-envelope.md)** — `/api/cart` vs basket `/api/v1/cart` route mismatch and `{success,data}` envelope unwrap; the dev-proxy half is fixed by the `vite.config.ts` rewrite.
 
 ---
 
