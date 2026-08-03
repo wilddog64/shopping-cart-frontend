@@ -1,5 +1,7 @@
 # Progress: Shopping Cart Frontend
 
+- [x] **Frontend deploy pipeline hardening** — `077c154` applies the three exact workflow blocks: `ci(deploy)` loop guard, `pull-requests: write`, and PAT-backed auto-merged manifest PR flow. `actionlint` passed; pushed to `fix/frontend-deploy-pipeline`. **PR #69 open** (https://github.com/wilddog64/shopping-cart-frontend/pull/69); CI green; Copilot 2 findings addressed in `6270b6e` (merge deploy PR by URL; spec scope wording) + issue doc `e897716`; threads resolved. **Runtime prereq before deploy can merge: create `CI_DEPLOY_PAT` repo secret (Contents R/W + Pull requests R/W).**
+
 ## Recent Task
 
 - [x] Wired `VITE_STRIPE_PUBLISHABLE_KEY` into Docker and both CI build-args blocks (`d1b3726`), using `vars` with no key committed; pushed on `feat/stripe-live`.
