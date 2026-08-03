@@ -61,8 +61,7 @@ function getUserRoles(user: ReturnType<typeof useAuth>['user']): string[] {
 
   // Extract roles from resource_access
   const resourceAccess = user.profile.resource_access as
-    | Record<string, { roles?: string[] }>
-    | undefined
+    Record<string, { roles?: string[] }> | undefined
   if (resourceAccess) {
     Object.values(resourceAccess).forEach((access) => {
       if (access.roles) {
