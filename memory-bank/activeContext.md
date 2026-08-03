@@ -1,5 +1,11 @@
 # Active Context: Frontend (React/TypeScript)
 
+## Latest completed task
+
+- **Frontend deploy PR flow COMPLETE** — `077c154` on `fix/frontend-deploy-pipeline` replaces protected-main direct pushes with an auto-merged deploy PR, adds the loop guard and pull-request permission; `actionlint` passed and the branch is pushed.
+
+- **Stripe Elements checkout COMPLETE `88ab4c8` on `origin/feat/stripe-checkout-elements` (2026-08-01).** Added test-mode Stripe tokenization and order-orchestrator checkout; TypeScript, lint, production build, and Vitest gates passed (26/26).
+
 ## Current Status (2026-03-14)
 
 CI green. All PRs merged to main. Branch protection active.
@@ -19,6 +25,8 @@ CI green. All PRs merged to main. Branch protection active.
 - **Branch protection** — 1 review + CI required, enforce_admins: false
 
 ## Active Task
+
+- **Stripe publishable-key image wiring** — `feat/stripe-live` commit `d1b3726` adds the Vite Stripe build ARG and repository-variable build args to both CI image builds; pushed to origin. Existing untracked planning docs were preserved.
 
 - **Multi-arch workflow pin** — branch `fix/multiarch-workflow-pin` updates `.github/workflows/ci.yml` to reference infra SHA `999f8d7` (linux/amd64 + linux/arm64 images).
 - **v0.1.0 release** — cut `release/v0.1.0` from main, add CHANGELOG, open PR, tag after merge.

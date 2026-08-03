@@ -88,6 +88,19 @@ export interface Address {
   country: string
 }
 
+export interface CheckoutRequest {
+  shippingAddress: Address
+}
+
+export interface OrderCheckoutRequest {
+  shippingAddress: Address
+  paymentMethodId: string
+}
+
+export type CheckoutResult =
+  | { status: 'PAID'; orderId: string; amount: string; currency: string }
+  | { status: 'FAILED'; orderId: string; retryable: boolean; failureReason: string }
+
 // API Response types
 export interface ApiError {
   message: string
