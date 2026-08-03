@@ -15,4 +15,4 @@ images:
   - name: shopping-cart/frontend
     newName: ghcr.io/wilddog64/shopping-cart-frontend
     # CI rewrites this to sha-${{ github.sha }} on every push to main.
-    newTag: latest
+    newTag: sha-71c8c3970a49e8d3c76ad2450ccbd927e242026d

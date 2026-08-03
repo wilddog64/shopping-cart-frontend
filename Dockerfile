@@ -25,7 +25,7 @@ ARG VITE_STRIPE_PUBLISHABLE_KEY
 RUN npm run build
 
 # Production stage
-FROM nginx:1.27-alpine
+FROM nginx:1.31-alpine
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
