@@ -34,13 +34,19 @@ re-triggering another deploy.
 
 ## Owner prerequisite (outside this change)
 
-Create a **fine-grained PAT** scoped to `shopping-cart-frontend` with **Contents: Read and write**
-and **Pull requests: Read and write** ONLY (no admin, no "bypass branch protections"), and add it
-as an **Actions secret** named `CI_DEPLOY_PAT`. The PAT is required so the PR created by the deploy
-job triggers the `pull_request` CI (a PR opened with the default `GITHUB_TOKEN` does NOT trigger
-workflows, so its required checks would never run and auto-merge would hang). The PAT does **not**
-bypass any check — the PR still must pass all 6 required checks to merge. `allow_auto_merge` is
-already enabled and `required_approving_review_count` is 0 on this repo, so no human review is needed.
+> **AMENDED 2026-08-02** — this originally required creating a new fine-grained PAT named
+> `CI_DEPLOY_PAT`. Superseded (PAT choice only) by
+> `docs/plans/frontend-deploy-reuse-packages-token.md`: the deploy step now reuses the existing
+> shared `PACKAGES_TOKEN` (already present in this repo and used by the backend repos for
+> manifest-bump git pushes), so **no new PAT is created**. The rationale below still applies —
+> a user PAT (not the default `GITHUB_TOKEN`) is required so the deploy PR triggers `pull_request`
+> CI, and it does not bypass branch protection.
+
+The deploy PR must be opened with a user PAT rather than the default `GITHUB_TOKEN` — a PR opened
+with `GITHUB_TOKEN` does NOT trigger workflows, so its required checks would never run and
+auto-merge would hang. The PAT does **not** bypass any check — the PR still must pass all 6
+required checks to merge. `allow_auto_merge` is already enabled and `required_approving_review_count`
+is 0 on this repo, so no human review is needed.
 
 ---
 
