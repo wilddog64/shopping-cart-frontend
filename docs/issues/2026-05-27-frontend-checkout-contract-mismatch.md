@@ -7,7 +7,6 @@
 `k3d-manager/docs/issues/2026-07-30-frontend-checkout-contract-mismatch.md` for the fresh
 evidence and the additional `orderId → /orders/undefined` mismatch this doc missed.
 **Affects:** `shopping-cart-frontend`
-**Assignee:** Gemini CLI
 
 ## Symptom
 In the Frontend UI, clicking "Proceed to Checkout" results in a red error message:

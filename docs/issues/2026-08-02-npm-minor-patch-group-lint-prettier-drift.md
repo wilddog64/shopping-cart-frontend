@@ -49,9 +49,10 @@ Doing this proactively on `main` clears the recurring red before the next weekly
   the 3.9 format, so the version bump was required (a reformat alone would move the red, not clear
   it). `main` CI (Prettier 3.9.6) now passes on these files; the recreated group #86 was rebased
   onto the fixed `main` and no longer needs its own Prettier bump.
-- Process fix applied: the formatter version is now pinned (`^3.9.6`), so a future formatter
-  minor/patch bump inside the group can still drift — the durable guard is a pinned exact version
-  or a `prettier --write` pre-commit hook (follow-up, not done here).
+- Process fix applied: the formatter version is now upgraded to `^3.9.6` — a **caret range**, not
+  an exact pin, so a future formatter minor/patch bump inside the group can still drift. The
+  durable guard is an exact version pin (`3.9.6`, no caret) or a `prettier --write` pre-commit
+  hook (follow-up, not done here).
 
 ## Process note
 
