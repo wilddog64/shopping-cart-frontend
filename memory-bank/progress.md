@@ -1,6 +1,7 @@
 # Progress: Shopping Cart Frontend
 
-- [x] **Frontend deploy pipeline hardening** — `077c154` applies the three exact workflow blocks: `ci(deploy)` loop guard, `pull-requests: write`, and PAT-backed auto-merged manifest PR flow. `actionlint` passed; pushed to `fix/frontend-deploy-pipeline`. **PR #69 open** (https://github.com/wilddog64/shopping-cart-frontend/pull/69); CI green; Copilot 2 findings addressed in `6270b6e` (merge deploy PR by URL; spec scope wording) + issue doc `e897716`; threads resolved. **Runtime prereq before deploy can merge: create `CI_DEPLOY_PAT` repo secret (Contents R/W + Pull requests R/W).**
+- [x] **Frontend deploy pipeline hardening** — `077c154` applies the three exact workflow blocks: `ci(deploy)` loop guard, `pull-requests: write`, and PAT-backed auto-merged manifest PR flow. **PR #69 MERGED** `efd1632` (2026-08-03); CI green; Copilot 2 findings addressed in `6270b6e` + issue doc `e897716`; threads resolved; `enforce_admins` restored; feature branch deleted.
+- [x] **Deploy token = reuse `PACKAGES_TOKEN` (no new PAT)** — follow-up on branch `fix/frontend-deploy-reuse-packages-token`: deploy step `GH_TOKEN` swapped from the never-created `CI_DEPLOY_PAT` to the existing shared `PACKAGES_TOKEN` (already in this repo; backend repos use it for manifest-bump git pushes → proven `repo` scope). No new PAT to create/track. Does not bypass branch protection — deploy PR still passes all required checks before auto-merge. Spec: `docs/plans/frontend-deploy-reuse-packages-token.md`. **Deploy pipeline is now runtime-ready (no missing secret).**
 
 ## Recent Task
 

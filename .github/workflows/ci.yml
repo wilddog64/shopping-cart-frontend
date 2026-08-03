@@ -230,7 +230,7 @@ jobs:
 
       - name: Open PR to update Kubernetes manifest to the new image tag
         env:
-          GH_TOKEN: ${{ secrets.CI_DEPLOY_PAT }}
+          GH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           target_tag="newTag: sha-${{ github.sha }}"
           if ! grep -qF "$target_tag" k8s/base/kustomization.yaml; then
