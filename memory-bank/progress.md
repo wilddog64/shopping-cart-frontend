@@ -1,5 +1,14 @@
 # Progress: Shopping Cart Frontend
 
+- [x] **Frontend deploy pipeline hardening** — `077c154` applies the three exact workflow blocks: `ci(deploy)` loop guard, `pull-requests: write`, and PAT-backed auto-merged manifest PR flow. **PR #69 MERGED** `efd1632` (2026-08-03); CI green; Copilot 2 findings addressed in `6270b6e` + issue doc `e897716`; threads resolved; `enforce_admins` restored; feature branch deleted.
+- [x] **Deploy token = reuse `PACKAGES_TOKEN` (no new PAT)** — follow-up on branch `fix/frontend-deploy-reuse-packages-token`: deploy step `GH_TOKEN` swapped from the never-created `CI_DEPLOY_PAT` to the existing shared `PACKAGES_TOKEN` (already in this repo; backend repos use it for manifest-bump git pushes → proven `repo` scope). No new PAT to create/track. Does not bypass branch protection — deploy PR still passes all required checks before auto-merge. Spec: `docs/plans/frontend-deploy-reuse-packages-token.md`. **Deploy pipeline is now runtime-ready (no missing secret).**
+
+## Recent Task
+
+- [x] Wired `VITE_STRIPE_PUBLISHABLE_KEY` into Docker and both CI build-args blocks (`d1b3726`), using `vars` with no key committed; pushed on `feat/stripe-live`.
+
+- [x] **Stripe Elements checkout COMPLETE `88ab4c8` on `origin/feat/stripe-checkout-elements` (2026-08-01).** Added Stripe dependencies, publishable-key config, 402-aware orchestrator client, non-optimistic cart invalidation, Elements card form, and four checkout tests; all specified gates passed.
+
 ## What's Built
 
 ### Core Application

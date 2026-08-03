@@ -19,4 +19,5 @@ export const ENDPOINTS = {
   // Order endpoints
   ORDERS: `${API_CONFIG.ORDER_SERVICE_URL}`,
   ORDER_BY_ID: (id: string) => `${API_CONFIG.ORDER_SERVICE_URL}/${id}`,
+  ORDER_CHECKOUT: `${API_CONFIG.ORDER_SERVICE_URL}/checkout`,
 } as const
