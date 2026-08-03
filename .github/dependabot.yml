@@ -12,20 +12,15 @@ updates:
           - "minor"
           - "patch"
     ignore:
-      # Major bumps deferred — each needs a dedicated migration (breaking changes).
-      # Minor/patch for these still flow. Revisit when scheduling the upgrades.
-      - dependency-name: "typescript"
+      # All npm major bumps deferred — each needs a dedicated migration (React 19,
+      # Router 7, zustand 5, oidc-client-ts 3, etc.). Review and schedule each
+      # manually. Minor/patch still flow (grouped in npm-minor-patch above).
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-      - dependency-name: "react-oidc-context"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "tailwindcss"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@typescript-eslint/*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint"
-        update-types: ["version-update:semver-major"]
+      # eslint-plugin-react-refresh minor also deferred — 0.5.x requires eslint 9,
+      # which is itself a deferred major; keep this until the eslint 9 migration.
       - dependency-name: "eslint-plugin-react-refresh"
-        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+        update-types: ["version-update:semver-minor"]
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
