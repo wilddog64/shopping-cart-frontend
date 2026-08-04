@@ -2,6 +2,8 @@
 
 ## Latest completed task
 
+- **Guest cart merge fixed `27acd07` (2026-08-04).** Frontend now retains the basket `X-Cart-Token`, sends it on cart requests, and merges the guest cart into the authenticated account on first cart load. Regression was documented in `docs/issues/2026-08-04-guest-cart-not-merged-after-login.md`; TypeScript, lint, and Vitest (26/26) passed.
+
 - **Frontend deploy PR flow COMPLETE** — `077c154` on `fix/frontend-deploy-pipeline` replaces protected-main direct pushes with an auto-merged deploy PR, adds the loop guard and pull-request permission; `actionlint` passed and the branch is pushed.
 
 - **Stripe Elements checkout COMPLETE `88ab4c8` on `origin/feat/stripe-checkout-elements` (2026-08-01).** Added test-mode Stripe tokenization and order-orchestrator checkout; TypeScript, lint, production build, and Vitest gates passed (26/26).
