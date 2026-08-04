@@ -9,6 +9,7 @@ import type {
   OrderCheckoutRequest,
   CheckoutResult,
 } from '@/types'
+import { GUEST_CART_TOKEN_KEY } from '@/services/api'
 
 export function useCart() {
   const auth = useAuth()
@@ -17,6 +18,12 @@ export function useCart() {
   return useQuery({
     queryKey: ['cart'],
     queryFn: async () => {
+      if (localStorage.getItem(GUEST_CART_TOKEN_KEY)) {
+        const merged = await cartService.mergeGuestCart()
+        localStorage.removeItem(GUEST_CART_TOKEN_KEY)
+        setCart(merged)
+        return merged
+      }
       const cart = await cartService.getCart()
       setCart(cart)
       return cart

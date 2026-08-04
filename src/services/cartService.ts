@@ -29,6 +29,11 @@ export const cartService = {
     await api.delete(ENDPOINTS.CART)
   },
 
+  async mergeGuestCart(): Promise<Cart> {
+    const response = await api.post<Wrapped<Cart>>(ENDPOINTS.CART_MERGE)
+    return response.data.data
+  },
+
   async checkout(req: CheckoutRequest): Promise<Cart> {
     const response = await api.post<Wrapped<{ message: string; cart: Cart }>>(
       ENDPOINTS.CART_CHECKOUT,
