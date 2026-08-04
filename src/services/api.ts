@@ -2,6 +2,8 @@ import axios, { type AxiosError, type AxiosInstance } from 'axios'
 import { getAccessToken } from '@/config/auth'
 import type { ApiError } from '@/types'
 
+export const GUEST_CART_TOKEN_KEY = 'guest-cart-token'
+
 // Create axios instance
 const api: AxiosInstance = axios.create({
   headers: {
@@ -16,6 +18,8 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+    const guestToken = localStorage.getItem(GUEST_CART_TOKEN_KEY)
+    if (guestToken) config.headers['X-Cart-Token'] = guestToken
     return config
   },
   (error) => Promise.reject(error)
@@ -23,7 +27,11 @@ api.interceptors.request.use(
 
 // Response interceptor for error handling
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const guestToken = response.headers['x-cart-token']
+    if (guestToken) localStorage.setItem(GUEST_CART_TOKEN_KEY, guestToken)
+    return response
+  },
   (error: AxiosError<ApiError>) => {
     if (error.response?.status === 401) {
       // Token expired or invalid, could trigger re-auth here

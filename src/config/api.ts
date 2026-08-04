@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   CART_ITEMS: `${API_CONFIG.CART_SERVICE_URL}/items`,
   CART_ITEM_BY_ID: (id: string) => `${API_CONFIG.CART_SERVICE_URL}/items/${id}`,
   CART_CHECKOUT: `${API_CONFIG.CART_SERVICE_URL}/checkout`,
+  CART_MERGE: `${API_CONFIG.CART_SERVICE_URL}/merge`,
 
   // Order endpoints
   ORDERS: `${API_CONFIG.ORDER_SERVICE_URL}`,
