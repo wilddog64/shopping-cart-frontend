@@ -2,20 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  annotations:
+    cve-remediation.k3dm.io/rollout-class: stateless-safe
   labels:
     app: frontend
     app.kubernetes.io/name: frontend
     app.kubernetes.io/component: web
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
+  minReadySeconds: 10
+  progressDeadlineSeconds: 600
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: frontend
   template:
     metadata:
       labels:
