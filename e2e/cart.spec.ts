@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Cart Page (Unauthenticated)', () => {
   test('should redirect to login when accessing cart', async ({ page }) => {
-    await page.goto('/cart')
+    await page.goto('/cart', { waitUntil: 'commit' })
 
     // Should show loading or redirect to Keycloak
     // Since we can't actually authenticate, we check for the loading state
