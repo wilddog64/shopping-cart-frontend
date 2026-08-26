@@ -158,6 +158,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    env:
+      COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
     steps:
       - uses: actions/checkout@v5
 
@@ -202,6 +204,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build, scan, and push frontend image
+        id: push
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -217,6 +220,20 @@ jobs:
             VITE_STRIPE_PUBLISHABLE_KEY=${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Install cosign
+        if: env.COSIGN_KEY != ''
+        uses: sigstore/cosign-installer@v3.7.0
+
+      - name: Sign image by digest
+        if: env.COSIGN_KEY != ''
+        env:
+          COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          IMAGE_REF: ghcr.io/wilddog64/shopping-cart-frontend
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          cosign sign --yes --key env://COSIGN_KEY "${IMAGE_REF}@${DIGEST}"
 
       - name: Scan frontend image (Trivy)
         uses: aquasecurity/trivy-action@v0.36.0
