@@ -184,6 +184,8 @@ jobs:
     needs: [build]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'ci(deploy):')
     runs-on: ubuntu-latest
+    env:
+      COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
     permissions:
       contents: write
       packages: write
