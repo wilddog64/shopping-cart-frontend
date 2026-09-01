@@ -225,7 +225,7 @@ jobs:
 
       - name: Install cosign
         if: env.COSIGN_KEY != ''
-        uses: sigstore/cosign-installer@v3.7.0
+        uses: sigstore/cosign-installer@v3.10.1
 
       - name: Sign image by digest
         if: env.COSIGN_KEY != ''
