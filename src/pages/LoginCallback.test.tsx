@@ -49,7 +49,9 @@ describe('LoginCallback', () => {
 
     act(() => vi.advanceTimersByTime(CALLBACK_TIMEOUT_MS))
 
-    expect(screen.getByText('Login took too long. The sign-in service may be restarting.')).toBeInTheDocument()
+    expect(
+      screen.getByText('Login took too long. The sign-in service may be restarting.')
+    ).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     expect(authMock.signinRedirect).toHaveBeenCalledTimes(1)
   })

@@ -51,7 +51,10 @@ export default function LoginCallback() {
       <div className="flex h-64 flex-col items-center justify-center gap-4">
         <p className="text-gray-700">Login took too long. The sign-in service may be restarting.</p>
         <div className="flex gap-4">
-          <button onClick={() => void auth.signinRedirect()} className="text-primary-600 hover:underline">
+          <button
+            onClick={() => void auth.signinRedirect()}
+            className="text-primary-600 hover:underline"
+          >
             Try again
           </button>
           <button onClick={() => navigate('/')} className="text-primary-600 hover:underline">
