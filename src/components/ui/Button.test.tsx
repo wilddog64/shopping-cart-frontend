@@ -10,7 +10,7 @@ describe('Button', () => {
     expect(button).toHaveClass('bg-primary-600')
   })
 
-  it('renders with outline-solid variant', () => {
+  it('renders with outline variant', () => {
     render(<Button variant="outline">Outline</Button>)
     const button = screen.getByRole('button', { name: /outline/i })
     expect(button).toHaveClass('border')
