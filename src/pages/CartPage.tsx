@@ -104,7 +104,7 @@ function CartItemRow({ item, currency }: { item: CartItem; currency: string }) {
 
   return (
     <div className="flex items-center gap-4 p-4">
-      <div className="h-20 w-20 flex-shrink-0 rounded-md bg-gray-100" />
+      <div className="h-20 w-20 shrink-0 rounded-md bg-gray-100" />
       <div className="flex-1">
         <h3 className="font-medium">{item.name}</h3>
         <p className="text-sm text-gray-500">{formatCurrency(item.unitPrice, currency)} each</p>

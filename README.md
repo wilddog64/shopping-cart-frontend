@@ -61,7 +61,7 @@ VITE_CART_SERVICE_URL=/api/cart
 | Client State | Zustand |
 | API Client | Axios |
 | Auth | oidc-client-ts + react-oidc-context |
-| Styling | Tailwind CSS 3.x |
+| Styling | Tailwind CSS 4.x |
 | Testing | Vitest + React Testing Library |
 | E2E Testing | Playwright |
 
