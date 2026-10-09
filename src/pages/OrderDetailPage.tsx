@@ -83,7 +83,7 @@ export default function OrderDetailPage() {
               <div className="divide-y">
                 {order.items.map((item) => (
                   <div key={item.id} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
-                    <div className="h-16 w-16 flex-shrink-0 rounded-md bg-gray-100" />
+                    <div className="h-16 w-16 shrink-0 rounded-md bg-gray-100" />
                     <div className="flex-1">
                       <h3 className="font-medium">{item.name}</h3>
                       <p className="text-sm text-gray-500">

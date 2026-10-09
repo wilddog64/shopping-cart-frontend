@@ -12,7 +12,7 @@
 | Client state | Zustand |
 | HTTP | Axios |
 | Auth | oidc-client-ts + react-oidc-context |
-| Styling | Tailwind CSS 3.x |
+| Styling | Tailwind CSS 4.x |
 | Unit tests | Vitest + React Testing Library |
 | E2E tests | Playwright |
 
