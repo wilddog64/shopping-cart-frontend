@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 env:
   NODE_VERSION: '22'
   VITE_KEYCLOAK_URL: https://keycloak.3ai-talk.org
@@ -14,6 +17,15 @@ env:
   VITE_CLIENT_ID: frontend
 
 jobs:
+  nginx-cache:
+    name: Nginx Cache Headers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check nginx cache headers
+        run: ./scripts/check-nginx-cache.sh
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
