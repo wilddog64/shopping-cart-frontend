@@ -20,8 +20,10 @@ describe('product image nginx cache policy', () => {
   test('sets a short cache TTL without weakening the location contract', () => {
     const location = readProductImageLocation()
 
-    expect(location).toContain('add_header Cache-Control "public, max-age=300" always;')
+    expect(location).toMatch(/^\s*expires 5m;$/m)
     expect(location).toContain('proxy_hide_header Cache-Control;')
+    // An add_header here would stop the server-level security headers from being inherited.
+    expect(location).not.toMatch(/^\s*add_header\b/m)
 
     const maxAges = [...location.matchAll(/max-age\s*=\s*(\d+)/gi)].map((match) => Number(match[1]))
     expect(maxAges.every((maxAge) => maxAge <= 300)).toBe(true)
