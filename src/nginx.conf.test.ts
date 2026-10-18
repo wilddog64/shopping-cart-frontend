@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -7,7 +9,9 @@ const defaultNginxConfigPath = resolve(dirname(fileURLToPath(import.meta.url)), 
 
 function readProductImageLocation() {
   const nginxConfig = readFileSync(process.env.NGINX_CONF_PATH ?? defaultNginxConfigPath, 'utf8')
-  const locationMatch = nginxConfig.match(/(^\s*location \^~ \/minio\/product-images\/ \{[\s\S]*?^\s*\})/m)
+  const locationMatch = nginxConfig.match(
+    /(^\s*location \^~ \/minio\/product-images\/ \{[\s\S]*?^\s*\})/m
+  )
 
   if (!locationMatch) {
     throw new Error('Could not find the product image location in nginx.conf')
@@ -31,7 +35,7 @@ describe('product image nginx cache policy', () => {
 
     expect(location).toMatch(/^\s*location \^~ \/minio\/product-images\/ \{$/m)
     expect(location).toContain(
-      'proxy_pass http://minio.shopping-cart-data.svc.cluster.local:9000/product-images/;',
+      'proxy_pass http://minio.shopping-cart-data.svc.cluster.local:9000/product-images/;'
     )
   })
 })
