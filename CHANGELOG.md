@@ -18,6 +18,7 @@
 - `k8s/base/deployment.yaml`: add explicit `strategy: RollingUpdate` with `maxSurge: 0` / `maxUnavailable: 1` so rollouts complete on the single-node hostinger cluster instead of wedging with an unschedulable surge pod (previously relied on the Kubernetes default surge)
 
 ### Fixed
+- Product images now carry a 5-minute Cache-Control so refreshed art reaches the storefront without a CDN purge.
 - **Dependabot auto-merges now build an image.** Auto-merge was enabled with `GITHUB_TOKEN`, so the merge
   was made as `github-actions`, and GitHub starts no workflow for that push: dependency and base-image fixes
   reached `main` but no image. Auto-merge is now enabled with a GitHub App installation token
