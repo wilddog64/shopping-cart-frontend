@@ -27,6 +27,9 @@ RUN npm run build
 # Production stage
 FROM nginx:1.31-alpine
 
+# Upgrade OS packages so a rebuild picks up Alpine security fixes before the base tag is republished
+RUN apk upgrade --no-cache
+
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
