@@ -191,10 +191,11 @@ jobs:
             VITE_KEYCLOAK_REALM=${{ env.VITE_KEYCLOAK_REALM }}
             VITE_CLIENT_ID=${{ env.VITE_CLIENT_ID }}
             VITE_STRIPE_PUBLISHABLE_KEY=${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}
+            APK_UPGRADE_EPOCH=${{ github.run_id }}
   publish:
     name: Build, Scan, Push & Deploy
     needs: [build]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'ci(deploy):')
+    if: github.ref == 'refs/heads/main' && ((github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'ci(deploy):')) || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     env:
       COSIGN_KEY: ${{ secrets.COSIGN_KEY }}
@@ -232,6 +233,7 @@ jobs:
             VITE_KEYCLOAK_REALM=${{ env.VITE_KEYCLOAK_REALM }}
             VITE_CLIENT_ID=${{ env.VITE_CLIENT_ID }}
             VITE_STRIPE_PUBLISHABLE_KEY=${{ vars.VITE_STRIPE_PUBLISHABLE_KEY }}
+            APK_UPGRADE_EPOCH=${{ github.run_id }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
