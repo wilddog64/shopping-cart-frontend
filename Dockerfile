@@ -28,6 +28,7 @@ RUN npm run build
 FROM nginx:1.31-alpine
 
 # Upgrade OS packages so a rebuild picks up Alpine security fixes before the base tag is republished
+ARG APK_UPGRADE_EPOCH
 RUN apk upgrade --no-cache
 
 # Copy custom nginx config
