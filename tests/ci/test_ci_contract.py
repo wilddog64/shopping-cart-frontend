@@ -27,14 +27,81 @@ def publish_job_condition(workflow: str) -> str:
 
 
 def evaluate_condition(expression: str, *, event: str, ref: str, message: str) -> bool:
-    """Evaluate the workflow's small GitHub expression subset against event data."""
-    expression = expression.replace("&&", " and ").replace("||", " or ")
-    expression = re.sub(r"!(?!=)", " not ", expression)
-    expression = expression.replace("github.ref", repr(ref))
-    expression = expression.replace("github.event_name", repr(event))
-    expression = expression.replace("github.event.head_commit.message", repr(message))
-    expression = re.sub(r"\bstartsWith\s*\(", "starts_with(", expression)
-    return bool(eval(expression, {"__builtins__": {}}, {"starts_with": lambda value, prefix: value.startswith(prefix)}))
+    """Evaluate the workflow's small GitHub expression subset against event data, without eval()."""
+    variables = {
+        "github.ref": ref,
+        "github.event_name": event,
+        "github.event.head_commit.message": message,
+    }
+    tokens = re.findall(r"&&|\|\||==|!=|!|\(|\)|,|'[^']*'|[A-Za-z_][\w.]*", expression)
+    if "".join(tokens) != re.sub(r"\s+", "", expression):
+        raise AssertionError(f"unsupported expression: {expression}")
+    position = 0
+
+    def peek():
+        return tokens[position] if position < len(tokens) else None
+
+    def take(expected=None):
+        nonlocal position
+        token = peek()
+        if token is None or (expected is not None and token != expected):
+            raise AssertionError(f"expected {expected!r} at {token!r} in: {expression}")
+        position += 1
+        return token
+
+    def value():
+        token = take()
+        if token.startswith("'"):
+            return token[1:-1]
+        if token in variables:
+            return variables[token]
+        raise AssertionError(f"unknown identifier {token!r} in: {expression}")
+
+    def primary():
+        token = peek()
+        if token == "!":
+            take()
+            return not primary()
+        if token == "(":
+            take("(")
+            result = disjunction()
+            take(")")
+            return result
+        if token == "startsWith":
+            take()
+            take("(")
+            subject = value()
+            take(",")
+            prefix = value()
+            take(")")
+            return subject.startswith(prefix)
+        left = value()
+        operator = take()
+        right = value()
+        if operator == "==":
+            return left == right
+        if operator == "!=":
+            return left != right
+        raise AssertionError(f"unsupported operator {operator!r} in: {expression}")
+
+    def conjunction():
+        result = primary()
+        while peek() == "&&":
+            take()
+            result = primary() and result
+        return result
+
+    def disjunction():
+        result = conjunction()
+        while peek() == "||":
+            take()
+            result = conjunction() or result
+        return result
+
+    result = disjunction()
+    if peek() is not None:
+        raise AssertionError(f"trailing tokens in: {expression}")
+    return result
 
 
 def action_build_args(workflow: str, step_name: str) -> list[str]:

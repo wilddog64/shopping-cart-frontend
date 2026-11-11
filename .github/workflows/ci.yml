@@ -165,6 +165,15 @@ jobs:
         run: npm audit --audit-level=moderate
         continue-on-error: true
 
+  contract:
+    name: CI Contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run workflow contract tests
+        run: python3 -m unittest discover -s tests/ci -v
+
   docker:
     name: Docker Build
     runs-on: ubuntu-latest
@@ -194,7 +203,7 @@ jobs:
             APK_UPGRADE_EPOCH=${{ github.run_id }}
   publish:
     name: Build, Scan, Push & Deploy
-    needs: [build]
+    needs: [build, contract]
     if: github.ref == 'refs/heads/main' && ((github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'ci(deploy):')) || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     env:
